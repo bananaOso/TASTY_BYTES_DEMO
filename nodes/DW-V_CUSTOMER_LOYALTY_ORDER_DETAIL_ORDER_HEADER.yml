@@ -1,0 +1,176 @@
+steps:
+  V_CUSTOMER_LOYALTY_ORDER_DETAIL_ORDER_HEADER-ffc47b00-a75d-41da-85b7-da825b46ba46:
+    operation:
+      config:
+        insertStrategy: UNION
+        selectDistinct: false
+      database: ""
+      deployEnabled: true
+      description: ""
+      isMultisource: false
+      locationName: DW
+      materializationType: view
+      metadata:
+        appliedNodeTests: []
+        columns:
+          - columnReference:
+              columnCounter: 69e90de2-94c3-455e-8323-cec8afc3c2c6
+              stepCounter: ffc47b00-a75d-41da-85b7-da825b46ba46
+            dataType: NUMBER(38,0)
+            description: ""
+            hashColumns: []
+            hashDetails: null
+            name: CUSTOMER_ID
+            nullable: true
+            sourceColumnReferences:
+              - columnReferences:
+                  - columnCounter: cf1add0b-b82c-4e03-8217-6294b81ccdc9
+                    stepCounter: 8dc7ceca-15a8-44ed-9dcb-8f52cec2bb2c
+                transform: ""
+          - columnReference:
+              columnCounter: 67b2731d-b95b-4c8c-8b64-b4daf494f283
+              stepCounter: ffc47b00-a75d-41da-85b7-da825b46ba46
+            dataType: VARCHAR(16777216)
+            description: ""
+            hashColumns: []
+            hashDetails: null
+            name: FIRST_NAME
+            nullable: true
+            sourceColumnReferences:
+              - columnReferences:
+                  - columnCounter: 52528418-bea3-4391-9714-63f214f66f4e
+                    stepCounter: 8dc7ceca-15a8-44ed-9dcb-8f52cec2bb2c
+                transform: ""
+          - columnReference:
+              columnCounter: 09067847-1170-4d9c-a242-93eacc910405
+              stepCounter: ffc47b00-a75d-41da-85b7-da825b46ba46
+            dataType: VARCHAR(16777216)
+            description: ""
+            hashColumns: []
+            hashDetails: null
+            name: LAST_NAME
+            nullable: true
+            sourceColumnReferences:
+              - columnReferences:
+                  - columnCounter: 0f0531b8-8355-4a46-a603-13a1cb60be22
+                    stepCounter: 8dc7ceca-15a8-44ed-9dcb-8f52cec2bb2c
+                transform: ""
+          - columnReference:
+              columnCounter: c7268d1e-8847-4a0c-897d-938581066191
+              stepCounter: ffc47b00-a75d-41da-85b7-da825b46ba46
+            dataType: VARCHAR(16777216)
+            description: ""
+            hashColumns: []
+            hashDetails: null
+            name: CITY
+            nullable: true
+            sourceColumnReferences:
+              - columnReferences:
+                  - columnCounter: 254a65db-b1d3-4e73-89b4-594a25d22f29
+                    stepCounter: 8dc7ceca-15a8-44ed-9dcb-8f52cec2bb2c
+                transform: ""
+          - columnReference:
+              columnCounter: 4ffa3f2f-a72b-41ff-921b-813951ada62b
+              stepCounter: ffc47b00-a75d-41da-85b7-da825b46ba46
+            dataType: VARCHAR(16777216)
+            description: ""
+            hashColumns: []
+            hashDetails: null
+            name: COUNTRY
+            nullable: true
+            sourceColumnReferences:
+              - columnReferences:
+                  - columnCounter: 40502f84-7d0a-4611-8301-356fb68881ca
+                    stepCounter: 8dc7ceca-15a8-44ed-9dcb-8f52cec2bb2c
+                transform: ""
+          - columnReference:
+              columnCounter: 81b9c04b-05a5-444b-bfad-9c35fcc75a2d
+              stepCounter: ffc47b00-a75d-41da-85b7-da825b46ba46
+            dataType: VARCHAR(16777216)
+            description: ""
+            hashColumns: []
+            hashDetails: null
+            name: E_MAIL
+            nullable: true
+            sourceColumnReferences:
+              - columnReferences:
+                  - columnCounter: 34642d1e-3f5e-411a-88b8-b50e4215f7a4
+                    stepCounter: 8dc7ceca-15a8-44ed-9dcb-8f52cec2bb2c
+                transform: ""
+          - columnReference:
+              columnCounter: bffa20f7-f9cc-407b-a40f-64fb8a462ad6
+              stepCounter: ffc47b00-a75d-41da-85b7-da825b46ba46
+            dataType: VARCHAR(16777216)
+            description: ""
+            hashColumns: []
+            hashDetails: null
+            name: PHONE_NUMBER
+            nullable: true
+            sourceColumnReferences:
+              - columnReferences:
+                  - columnCounter: 12ef4dee-3c0a-460f-95c8-57e13195e87f
+                    stepCounter: 8dc7ceca-15a8-44ed-9dcb-8f52cec2bb2c
+                transform: ""
+          - columnReference:
+              columnCounter: 55979c14-e772-427e-b0c2-1b222e4695cb
+              stepCounter: ffc47b00-a75d-41da-85b7-da825b46ba46
+            dataType: NUMBER(38,0)
+            description: ""
+            hashColumns: []
+            hashDetails: null
+            name: CUSTOMER_ID
+            nullable: true
+            sourceColumnReferences:
+              - columnReferences:
+                  - columnCounter: c62afdaf-7832-48b6-85f6-6726e719b23d
+                    stepCounter: dc6ab109-731a-4220-8f4e-64f7d923cafe
+                transform: ""
+          - acceptedValues:
+              strictMatch: true
+              values: []
+            appliedColumnTests: {}
+            columnReference:
+              columnCounter: d6bbee58-5ea5-4472-b3ca-8602b38f7691
+              stepCounter: ffc47b00-a75d-41da-85b7-da825b46ba46
+            config: {}
+            dataType: ""
+            defaultValue: ""
+            description: ""
+            keyColumnType: None
+            name: TOTAL_SALES
+            nullable: true
+            sourceColumnReferences:
+              - columnReferences:
+                  - columnCounter: "0"
+                    stepCounter: "0"
+                transform: "\"FCT_ORDER_DETAIL_ORDER_HEADER\".\"ORDER_TOTAL\""
+            systemColumnType: None
+            transform: ""
+        cteString: ""
+        enabledColumnTestIDs: []
+        sourceMapping:
+          - aliases:
+              DIM_CUSTOMER_LOYALTY: 8dc7ceca-15a8-44ed-9dcb-8f52cec2bb2c
+              FCT_ORDER_DETAIL_ORDER_HEADER: dc6ab109-731a-4220-8f4e-64f7d923cafe
+            customSQL:
+              customSQL: ""
+            dependencies:
+              - locationName: DW
+                nodeName: DIM_CUSTOMER_LOYALTY
+              - locationName: DW
+                nodeName: FCT_ORDER_DETAIL_ORDER_HEADER
+            join:
+              joinCondition: |-
+                FROM {{ ref('DW', 'DIM_CUSTOMER_LOYALTY') }} "DIM_CUSTOMER_LOYALTY"
+                INNER JOIN {{ ref('DW', 'FCT_ORDER_DETAIL_ORDER_HEADER') }} "FCT_ORDER_DETAIL_ORDER_HEADER"
+                ON "DIM_CUSTOMER_LOYALTY"."CUSTOMER_ID" = "FCT_ORDER_DETAIL_ORDER_HEADER"."CUSTOMER_ID"
+                group by "DIM_CUSTOMER_LOYALTY"."CITY", "DIM_CUSTOMER_LOYALTY"."COUNTRY", "DIM_CUSTOMER_LOYALTY"."FIRST_NAME",
+                "DIM_CUSTOMER_LOYALTY"."LAST_NAME", "DIM_CUSTOMER_LOYALTY"."PHONE_NUMBER", "DIM_CUSTOMER_LOYALTY"."E_MAIL"
+            name: V_CUSTOMER_LOYALTY_ORDER_DETAIL_ORDER_HEADER
+            noLinkRefs: []
+      name: V_CUSTOMER_LOYALTY_ORDER_DETAIL_ORDER_HEADER
+      overrideSQL: false
+      schema: ""
+      sqlType: View
+      type: sql
+    stepCounter: ffc47b00-a75d-41da-85b7-da825b46ba46

@@ -1,11 +1,11 @@
 steps:
-  LINEITEM-619c85ae-afd9-4e00-84cf-e8e968291931:
+  CUSTOMER_LOYALTY-72cbb28a-faa2-4828-ab70-97b70f44b989:
     operation:
       database: ""
       dataset: ""
       deployEnabled: true
       description: ""
-      locationName: DW
+      locationName: RAW_CUSTOMER
       metadata:
         columns:
           - acceptedValues:
@@ -13,13 +13,13 @@ steps:
               values: []
             appliedColumnTests: {}
             columnReference:
-              columnCounter: 2b120deb-8047-4374-ae55-8216050c8221
-              stepCounter: 619c85ae-afd9-4e00-84cf-e8e968291931
+              columnCounter: 512f71a6-e758-46e4-81dc-3705bc82ce8d
+              stepCounter: 72cbb28a-faa2-4828-ab70-97b70f44b989
             config: {}
             dataType: NUMBER(38,0)
             defaultValue: ""
             description: ""
-            name: L_ORDERKEY
+            name: CUSTOMER_ID
             nullable: true
             primaryKey: false
             uniqueKey: false
@@ -28,13 +28,13 @@ steps:
               values: []
             appliedColumnTests: {}
             columnReference:
-              columnCounter: a58b96d7-1f32-47e9-8f70-57729de489bd
-              stepCounter: 619c85ae-afd9-4e00-84cf-e8e968291931
+              columnCounter: 4130d66a-8487-450e-a942-563052e8741c
+              stepCounter: 72cbb28a-faa2-4828-ab70-97b70f44b989
             config: {}
-            dataType: NUMBER(38,0)
+            dataType: VARCHAR(16777216)
             defaultValue: ""
             description: ""
-            name: L_PARTKEY
+            name: FIRST_NAME
             nullable: true
             primaryKey: false
             uniqueKey: false
@@ -43,13 +43,13 @@ steps:
               values: []
             appliedColumnTests: {}
             columnReference:
-              columnCounter: 0c01d945-e1b7-493e-b500-5382d3851159
-              stepCounter: 619c85ae-afd9-4e00-84cf-e8e968291931
+              columnCounter: 7b18a54c-307e-43cd-bc44-1e13c2b962e5
+              stepCounter: 72cbb28a-faa2-4828-ab70-97b70f44b989
             config: {}
-            dataType: NUMBER(38,0)
+            dataType: VARCHAR(16777216)
             defaultValue: ""
             description: ""
-            name: L_SUPPKEY
+            name: LAST_NAME
             nullable: true
             primaryKey: false
             uniqueKey: false
@@ -58,13 +58,13 @@ steps:
               values: []
             appliedColumnTests: {}
             columnReference:
-              columnCounter: a63a8f62-af0e-44b4-aca7-387d971bc2aa
-              stepCounter: 619c85ae-afd9-4e00-84cf-e8e968291931
+              columnCounter: b00202f9-59b2-48cd-aba5-349d19eb55b5
+              stepCounter: 72cbb28a-faa2-4828-ab70-97b70f44b989
             config: {}
-            dataType: NUMBER(38,0)
+            dataType: VARCHAR(16777216)
             defaultValue: ""
             description: ""
-            name: L_LINENUMBER
+            name: CITY
             nullable: true
             primaryKey: false
             uniqueKey: false
@@ -73,13 +73,13 @@ steps:
               values: []
             appliedColumnTests: {}
             columnReference:
-              columnCounter: cc76737c-3820-4450-9ebf-67f19e5b99bd
-              stepCounter: 619c85ae-afd9-4e00-84cf-e8e968291931
+              columnCounter: d97a1ae9-c7e2-4a63-b2c2-79f2543409ac
+              stepCounter: 72cbb28a-faa2-4828-ab70-97b70f44b989
             config: {}
-            dataType: NUMBER(12,2)
+            dataType: VARCHAR(16777216)
             defaultValue: ""
             description: ""
-            name: L_QUANTITY
+            name: COUNTRY
             nullable: true
             primaryKey: false
             uniqueKey: false
@@ -88,13 +88,13 @@ steps:
               values: []
             appliedColumnTests: {}
             columnReference:
-              columnCounter: 7e9104d6-77d6-45e7-9a2b-a9b0537f6c0b
-              stepCounter: 619c85ae-afd9-4e00-84cf-e8e968291931
+              columnCounter: 06060523-09c4-4e69-ac2b-1bc5bfdb38b9
+              stepCounter: 72cbb28a-faa2-4828-ab70-97b70f44b989
             config: {}
-            dataType: NUMBER(12,2)
+            dataType: VARCHAR(16777216)
             defaultValue: ""
             description: ""
-            name: L_EXTENDEDPRICE
+            name: POSTAL_CODE
             nullable: true
             primaryKey: false
             uniqueKey: false
@@ -103,13 +103,13 @@ steps:
               values: []
             appliedColumnTests: {}
             columnReference:
-              columnCounter: 23288b00-409b-44ef-b3c4-4556f291e858
-              stepCounter: 619c85ae-afd9-4e00-84cf-e8e968291931
+              columnCounter: f143d9d6-4a4c-46a3-b3d9-4af5f1577971
+              stepCounter: 72cbb28a-faa2-4828-ab70-97b70f44b989
             config: {}
-            dataType: NUMBER(12,2)
+            dataType: VARCHAR(16777216)
             defaultValue: ""
             description: ""
-            name: L_DISCOUNT
+            name: PREFERRED_LANGUAGE
             nullable: true
             primaryKey: false
             uniqueKey: false
@@ -118,13 +118,13 @@ steps:
               values: []
             appliedColumnTests: {}
             columnReference:
-              columnCounter: 9c770d6d-c146-430c-a196-3f7f5177a984
-              stepCounter: 619c85ae-afd9-4e00-84cf-e8e968291931
+              columnCounter: f0792080-820c-4435-8027-dfebd767cbc7
+              stepCounter: 72cbb28a-faa2-4828-ab70-97b70f44b989
             config: {}
-            dataType: NUMBER(12,2)
+            dataType: VARCHAR(16777216)
             defaultValue: ""
             description: ""
-            name: L_TAX
+            name: GENDER
             nullable: true
             primaryKey: false
             uniqueKey: false
@@ -133,13 +133,13 @@ steps:
               values: []
             appliedColumnTests: {}
             columnReference:
-              columnCounter: 926b0dec-3565-4240-92df-afa45d4b70a1
-              stepCounter: 619c85ae-afd9-4e00-84cf-e8e968291931
+              columnCounter: 48340431-79b7-4bd8-9669-78c52bf444c5
+              stepCounter: 72cbb28a-faa2-4828-ab70-97b70f44b989
             config: {}
-            dataType: VARCHAR(1)
+            dataType: VARCHAR(16777216)
             defaultValue: ""
             description: ""
-            name: L_RETURNFLAG
+            name: FAVOURITE_BRAND
             nullable: true
             primaryKey: false
             uniqueKey: false
@@ -148,13 +148,13 @@ steps:
               values: []
             appliedColumnTests: {}
             columnReference:
-              columnCounter: 9d7cddbc-c98c-41f3-a9c1-d2f189691191
-              stepCounter: 619c85ae-afd9-4e00-84cf-e8e968291931
+              columnCounter: 2118f43e-d3dd-4fe4-b18a-ddc97f23364a
+              stepCounter: 72cbb28a-faa2-4828-ab70-97b70f44b989
             config: {}
-            dataType: VARCHAR(1)
+            dataType: VARCHAR(16777216)
             defaultValue: ""
             description: ""
-            name: L_LINESTATUS
+            name: MARITAL_STATUS
             nullable: true
             primaryKey: false
             uniqueKey: false
@@ -163,13 +163,28 @@ steps:
               values: []
             appliedColumnTests: {}
             columnReference:
-              columnCounter: 2bdaafea-089e-479e-af94-1a273b494eed
-              stepCounter: 619c85ae-afd9-4e00-84cf-e8e968291931
+              columnCounter: dbc6afd8-ff2d-47cf-9d46-9ad4062cd856
+              stepCounter: 72cbb28a-faa2-4828-ab70-97b70f44b989
+            config: {}
+            dataType: VARCHAR(16777216)
+            defaultValue: ""
+            description: ""
+            name: CHILDREN_COUNT
+            nullable: true
+            primaryKey: false
+            uniqueKey: false
+          - acceptedValues:
+              strictMatch: true
+              values: []
+            appliedColumnTests: {}
+            columnReference:
+              columnCounter: f6bc92d3-7f72-4740-b5e8-31746fa27eae
+              stepCounter: 72cbb28a-faa2-4828-ab70-97b70f44b989
             config: {}
             dataType: DATE
             defaultValue: ""
             description: ""
-            name: L_SHIPDATE
+            name: SIGN_UP_DATE
             nullable: true
             primaryKey: false
             uniqueKey: false
@@ -178,13 +193,13 @@ steps:
               values: []
             appliedColumnTests: {}
             columnReference:
-              columnCounter: 0f25dbb2-2498-4360-b2bc-06675167a6eb
-              stepCounter: 619c85ae-afd9-4e00-84cf-e8e968291931
+              columnCounter: 40200c81-f7ff-4231-ada0-8cda0e362807
+              stepCounter: 72cbb28a-faa2-4828-ab70-97b70f44b989
             config: {}
             dataType: DATE
             defaultValue: ""
             description: ""
-            name: L_COMMITDATE
+            name: BIRTHDAY_DATE
             nullable: true
             primaryKey: false
             uniqueKey: false
@@ -193,13 +208,13 @@ steps:
               values: []
             appliedColumnTests: {}
             columnReference:
-              columnCounter: 4782601a-4798-49ee-8478-7f520a472cca
-              stepCounter: 619c85ae-afd9-4e00-84cf-e8e968291931
+              columnCounter: 48cc2d0b-301a-4a9d-bd31-f6e2c401b22b
+              stepCounter: 72cbb28a-faa2-4828-ab70-97b70f44b989
             config: {}
-            dataType: DATE
+            dataType: VARCHAR(16777216)
             defaultValue: ""
             description: ""
-            name: L_RECEIPTDATE
+            name: E_MAIL
             nullable: true
             primaryKey: false
             uniqueKey: false
@@ -208,66 +223,21 @@ steps:
               values: []
             appliedColumnTests: {}
             columnReference:
-              columnCounter: 565c57f4-271e-49c4-be20-0c66d242cab8
-              stepCounter: 619c85ae-afd9-4e00-84cf-e8e968291931
+              columnCounter: 7bcc7128-216e-4c17-a4f2-003e6cb64e3d
+              stepCounter: 72cbb28a-faa2-4828-ab70-97b70f44b989
             config: {}
-            dataType: VARCHAR(25)
+            dataType: VARCHAR(16777216)
             defaultValue: ""
             description: ""
-            name: L_SHIPINSTRUCT
-            nullable: true
-            primaryKey: false
-            uniqueKey: false
-          - acceptedValues:
-              strictMatch: true
-              values: []
-            appliedColumnTests: {}
-            columnReference:
-              columnCounter: e3f10b68-e43d-432f-bced-fb7ec0d8bd19
-              stepCounter: 619c85ae-afd9-4e00-84cf-e8e968291931
-            config: {}
-            dataType: VARCHAR(10)
-            defaultValue: ""
-            description: ""
-            name: L_SHIPMODE
-            nullable: true
-            primaryKey: false
-            uniqueKey: false
-          - acceptedValues:
-              strictMatch: true
-              values: []
-            appliedColumnTests: {}
-            columnReference:
-              columnCounter: 70a9c28e-1981-4d45-8a27-63a5a60a0eeb
-              stepCounter: 619c85ae-afd9-4e00-84cf-e8e968291931
-            config: {}
-            dataType: VARCHAR(44)
-            defaultValue: ""
-            description: ""
-            name: L_COMMENT
-            nullable: true
-            primaryKey: false
-            uniqueKey: false
-          - acceptedValues:
-              strictMatch: true
-              values: []
-            appliedColumnTests: {}
-            columnReference:
-              columnCounter: 3efea6e8-0def-4d0b-8334-aa6aa3e4aece
-              stepCounter: 619c85ae-afd9-4e00-84cf-e8e968291931
-            config: {}
-            dataType: TIMESTAMP_LTZ(9)
-            defaultValue: ""
-            description: ""
-            name: L_LOAD_TIMESTAMP
+            name: PHONE_NUMBER
             nullable: true
             primaryKey: false
             uniqueKey: false
         join:
-          joinCondition: FROM {{ ref('DW', 'LINEITEM') }}
-      name: LINEITEM
+          joinCondition: FROM {{ ref('RAW_CUSTOMER', 'CUSTOMER_LOYALTY') }}
+      name: CUSTOMER_LOYALTY
       schema: ""
       sqlType: Source
-      table: LINEITEM
+      table: CUSTOMER_LOYALTY
       type: sourceInput
-    stepCounter: 619c85ae-afd9-4e00-84cf-e8e968291931
+    stepCounter: 72cbb28a-faa2-4828-ab70-97b70f44b989

@@ -8,23 +8,7 @@ jobs:
     name: Refresh BI Star Schema
     steps: []
     subgraphs: []
-locations:
-  3RD_PARTY_DATA:
-    mappingDefinitions:
-      "22":
-        database: CROOD_DEV
-        schema: WEATHER
-      "23":
-        database: CROOD_QA
-        schema: WEATHER
-  DW:
-    mappingDefinitions:
-      "22":
-        database: CROOD_DEV
-        schema: SOURCE_DATA
-      "23":
-        database: CROOD_QA
-        schema: SOURCE_DATA
+locations: {}
 macros:
   Macro-1:
     id: "1"
