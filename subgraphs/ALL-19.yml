@@ -1,0 +1,27 @@
+fileVersion: 1
+id: "19"
+name: ALL
+steps:
+  - 16ae4a4a-455b-4e8c-933a-ffc7a75c781e
+  - 2fb3e90f-6e0e-4f2f-b365-a50b8611e9d3
+  - 3f13acf7-e101-46b1-ba98-de4cfa1964fa
+  - 4db780f4-ab51-4f08-b7c2-3faba8105813
+  - 502406cc-90fa-4358-8b4c-5b9e0c5b2aad
+  - 61ee79aa-9a70-4987-baa8-4efba74367fa
+  - 63b21a53-29f6-44fe-b3d6-d35f1f0c1117
+  - 6a0eb8aa-42b9-41b3-acf2-cd8c3bffb819
+  - 6c8d6db5-c4de-443a-90f2-0ac56b249896
+  - 703f291a-13c8-4346-a2d9-18c294121618
+  - 72cbb28a-faa2-4828-ab70-97b70f44b989
+  - 75f25b73-5bde-4692-ba2e-29b97ba74ca8
+  - 8020d7ba-1b17-4a3c-9b46-ec88a51ce4d9
+  - 836ab322-affb-420a-90c7-d22983a583c7
+  - 8546a570-8ac7-45a9-b95e-d5bfd2a12fdd
+  - bc5a78ec-f129-4bdd-ae3b-f5eab4886a7c
+  - bdf4697c-ff9e-49e5-991d-d31cb768af9d
+  - d744f637-117e-4f66-9737-bb022ac06732
+  - de0bb751-823b-4091-b33f-4c502aaa25ec
+  - e76eee0e-8b78-46d0-9746-acbcf020f58c
+  - ea1024ad-79fb-40f2-9103-9f158284a06d
+  - fa3afca1-427e-42f4-a0cf-a3197820ad81
+type: Subgraph
