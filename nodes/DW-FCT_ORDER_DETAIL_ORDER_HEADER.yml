@@ -287,20 +287,6 @@ operation:
             transform: ""
       - appliedColumnTests: {}
         columnReference:
-          columnCounter: c8af28d6-06db-4387-8e73-ffae2cb9c05d
-          stepCounter: dc6ab109-731a-4220-8f4e-64f7d923cafe
-        config: {}
-        dataType: VARCHAR(16777216)
-        description: ""
-        name: MAKE
-        nullable: true
-        sourceColumnReferences:
-          - columnReferences:
-              - columnCounter: 8cc21e98-14a5-4b0d-baa5-a6150fc89b6e
-                stepCounter: f4511a26-3fe4-4f04-81e1-c8fbb13b95d4
-            transform: ""
-      - appliedColumnTests: {}
-        columnReference:
           columnCounter: 9acfb9c2-5fad-4de3-8a50-40b625a72c0b
           stepCounter: dc6ab109-731a-4220-8f4e-64f7d923cafe
         config: {}
@@ -313,20 +299,6 @@ operation:
           - columnReferences:
               - columnCounter: 5c6853f0-8f2c-4d5b-bf74-4cb3372bb627
                 stepCounter: f0975e79-00b0-442b-ba05-4f52f218e551
-            transform: ""
-      - appliedColumnTests: {}
-        columnReference:
-          columnCounter: a9cc0537-1959-4582-8a94-e27673a39d48
-          stepCounter: dc6ab109-731a-4220-8f4e-64f7d923cafe
-        config: {}
-        dataType: Number
-        description: ""
-        name: Truck_age
-        nullable: true
-        sourceColumnReferences:
-          - columnReferences:
-              - columnCounter: ff6dce9a-4811-4a76-9940-0ef4f7564251
-                stepCounter: f4511a26-3fe4-4f04-81e1-c8fbb13b95d4
             transform: ""
       - appliedColumnTests: {}
         columnReference:
@@ -425,20 +397,15 @@ operation:
     cteString: ""
     enabledColumnTestIDs: []
     sourceMapping:
-      - aliases: {}
+      - aliases:
+          STG_ORDER_DETAIL_ORDER_HEADER: f0975e79-00b0-442b-ba05-4f52f218e551
         customSQL:
           customSQL: ""
         dependencies:
           - locationName: DW
-            nodeName: DIM_TRUCK
-          - locationName: DW
             nodeName: STG_ORDER_DETAIL_ORDER_HEADER
         join:
-          joinCondition: |-
-            FROM {{ ref('DW', 'STG_ORDER_DETAIL_ORDER_HEADER') }} "STG_ORDER_DETAIL_ORDER_HEADER"
-            FROM {{ ref('DW', 'STG_ORDER_DETAIL_ORDER_HEADER') }} "STG_ORDER_DETAIL_ORDER_HEADER"
-            LEFT JOIN {{ ref('DW', 'DIM_TRUCK') }} "DIM_TRUCK"
-            ON "STG_ORDER_DETAIL_ORDER_HEADER"./*COLUMN*/ = "DIM_TRUCK"."TRUCK_ID"
+          joinCondition: FROM {{ ref('DW', 'STG_ORDER_DETAIL_ORDER_HEADER') }} "STG_ORDER_DETAIL_ORDER_HEADER"
         name: FCT_ORDER_DETAIL_ORDER_HEADER
         noLinkRefs: []
   name: FCT_ORDER_DETAIL_ORDER_HEADER
