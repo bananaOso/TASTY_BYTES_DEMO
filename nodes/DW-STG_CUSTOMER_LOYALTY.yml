@@ -235,13 +235,13 @@ operation:
         dataType: VARCHAR
         defaultValue: ""
         description: ""
-        name: CUSTOMER_LOYALTY_ID
+        name: SYS_IDS
         nullable: true
         sourceColumnReferences:
           - columnReferences:
               - columnCounter: "0"
                 stepCounter: "0"
-            transform: CUSTOMER_LOYALTY.SYS_ID
+            transform: ""
     cteString: ""
     description: ""
     destinationName: ""

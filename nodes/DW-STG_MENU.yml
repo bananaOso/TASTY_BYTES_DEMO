@@ -179,13 +179,13 @@ operation:
         dataType: VARCHAR
         defaultValue: ""
         description: ""
-        name: MENU_ID
+        name: SYS_IDS
         nullable: true
         sourceColumnReferences:
           - columnReferences:
               - columnCounter: "0"
                 stepCounter: "0"
-            transform: MENU.SYS_ID
+            transform: ""
     cteString: ""
     description: ""
     destinationName: ""

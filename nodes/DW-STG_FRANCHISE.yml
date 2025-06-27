@@ -123,13 +123,13 @@ operation:
         dataType: VARCHAR
         defaultValue: ""
         description: ""
-        name: FRANCHISE_ID
+        name: SYS_IDS
         nullable: true
         sourceColumnReferences:
           - columnReferences:
               - columnCounter: "0"
                 stepCounter: "0"
-            transform: FRANCHISE.SYS_ID
+            transform: ""
     cteString: ""
     description: ""
     destinationName: ""
