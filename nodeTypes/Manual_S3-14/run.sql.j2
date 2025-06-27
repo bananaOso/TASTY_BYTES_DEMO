@@ -1,0 +1,3 @@
+-- ingest from S3 into the shift sales table
+COPY INTO crood_dev.source_data.shift_sales
+FROM @crood_dev.source_data.{{config.stage}}/{{config.stagePath}};
