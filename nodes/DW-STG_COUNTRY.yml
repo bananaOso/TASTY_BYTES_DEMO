@@ -3,11 +3,22 @@ id: 34112971-501e-4af1-993b-e024abb61d35
 name: STG_COUNTRY
 operation:
   config:
+    clusterKey: false
+    downstreamOption: false
+    groupByAll: false
+    initialize: ON_CREATE
     insertStrategy: INSERT
+    lagSpecification:
+      items:
+        - lagPeriod: Minutes
+          lagValue: 60
     postSQL: ""
     preSQL: ""
+    refresh_mode: INCREMENTAL
+    selectDistinct: false
     testsEnabled: true
     truncateBefore: true
+    warehouseName: COMPUTE_WH
   database: ""
   deployEnabled: true
   description: ""
