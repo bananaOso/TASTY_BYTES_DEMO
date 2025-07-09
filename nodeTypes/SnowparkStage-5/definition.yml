@@ -9,6 +9,7 @@ metadata:
     short: PY
     plural: Snowpark stages
     tagColor: 'blue'
+    isColumnResyncEnabled: true
 
     config:
     - groupName: Options
