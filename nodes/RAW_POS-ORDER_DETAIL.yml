@@ -1,0 +1,151 @@
+fileVersion: 1
+id: e76eee0e-8b78-46d0-9746-acbcf020f58c
+name: ORDER_DETAIL
+operation:
+  database: ""
+  deployEnabled: true
+  description: ""
+  locationName: RAW_POS
+  metadata:
+    columns:
+      - acceptedValues:
+          strictMatch: true
+          values: []
+        appliedColumnTests: {}
+        columnReference:
+          columnCounter: 0491cdde-c41d-420f-8d4c-adf8a227e673
+          stepCounter: e76eee0e-8b78-46d0-9746-acbcf020f58c
+        config: {}
+        dataType: NUMBER(38,0)
+        defaultValue: ""
+        description: ""
+        name: ORDER_DETAIL_ID
+        nullable: true
+        primaryKey: false
+        uniqueKey: false
+      - acceptedValues:
+          strictMatch: true
+          values: []
+        appliedColumnTests: {}
+        columnReference:
+          columnCounter: 04faab5d-210e-4274-8182-2559aa6880ca
+          stepCounter: e76eee0e-8b78-46d0-9746-acbcf020f58c
+        config: {}
+        dataType: NUMBER(38,0)
+        defaultValue: ""
+        description: ""
+        name: ORDER_ID
+        nullable: true
+        primaryKey: false
+        uniqueKey: false
+      - acceptedValues:
+          strictMatch: true
+          values: []
+        appliedColumnTests: {}
+        columnReference:
+          columnCounter: 51af12f2-6ae7-4640-bfa6-64b3934713fb
+          stepCounter: e76eee0e-8b78-46d0-9746-acbcf020f58c
+        config: {}
+        dataType: NUMBER(38,0)
+        defaultValue: ""
+        description: ""
+        name: MENU_ITEM_ID
+        nullable: true
+        primaryKey: false
+        uniqueKey: false
+      - acceptedValues:
+          strictMatch: true
+          values: []
+        appliedColumnTests: {}
+        columnReference:
+          columnCounter: bb00b425-d874-466f-8da8-3fcdc0851b90
+          stepCounter: e76eee0e-8b78-46d0-9746-acbcf020f58c
+        config: {}
+        dataType: VARCHAR(16777216)
+        defaultValue: ""
+        description: ""
+        name: DISCOUNT_ID
+        nullable: true
+        primaryKey: false
+        uniqueKey: false
+      - acceptedValues:
+          strictMatch: true
+          values: []
+        appliedColumnTests: {}
+        columnReference:
+          columnCounter: 7eafc0c1-bc32-48f3-bec4-cb8fc5615ed5
+          stepCounter: e76eee0e-8b78-46d0-9746-acbcf020f58c
+        config: {}
+        dataType: NUMBER(38,0)
+        defaultValue: ""
+        description: ""
+        name: LINE_NUMBER
+        nullable: true
+        primaryKey: false
+        uniqueKey: false
+      - acceptedValues:
+          strictMatch: true
+          values: []
+        appliedColumnTests: {}
+        columnReference:
+          columnCounter: dc80c8c3-5216-443e-ac9a-a23319b30018
+          stepCounter: e76eee0e-8b78-46d0-9746-acbcf020f58c
+        config: {}
+        dataType: NUMBER(5,0)
+        defaultValue: ""
+        description: ""
+        name: QUANTITY
+        nullable: true
+        primaryKey: false
+        uniqueKey: false
+      - acceptedValues:
+          strictMatch: true
+          values: []
+        appliedColumnTests: {}
+        columnReference:
+          columnCounter: 962be55e-3d53-4ab7-8351-a6cdff69ba01
+          stepCounter: e76eee0e-8b78-46d0-9746-acbcf020f58c
+        config: {}
+        dataType: NUMBER(38,4)
+        defaultValue: ""
+        description: ""
+        name: UNIT_PRICE
+        nullable: true
+        primaryKey: false
+        uniqueKey: false
+      - acceptedValues:
+          strictMatch: true
+          values: []
+        appliedColumnTests: {}
+        columnReference:
+          columnCounter: c704bbea-b1ea-4515-bd9d-5b24fa85b3bf
+          stepCounter: e76eee0e-8b78-46d0-9746-acbcf020f58c
+        config: {}
+        dataType: NUMBER(38,4)
+        defaultValue: ""
+        description: ""
+        name: PRICE
+        nullable: true
+        primaryKey: false
+        uniqueKey: false
+      - acceptedValues:
+          strictMatch: true
+          values: []
+        appliedColumnTests: {}
+        columnReference:
+          columnCounter: d9bd4f7c-f250-48c5-8261-75b01ca0cfa0
+          stepCounter: e76eee0e-8b78-46d0-9746-acbcf020f58c
+        config: {}
+        dataType: VARCHAR(16777216)
+        defaultValue: ""
+        description: ""
+        name: ORDER_ITEM_DISCOUNT_AMOUNT
+        nullable: true
+        primaryKey: false
+        uniqueKey: false
+  name: ORDER_DETAIL
+  schema: ""
+  sqlType: Source
+  type: sourceInput
+  version: 1
+type: Node

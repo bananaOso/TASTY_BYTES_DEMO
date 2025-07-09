@@ -1,0 +1,39 @@
+fileVersion: 1
+id: "14"
+isDisabled: true
+metadata:
+  defaultStorageLocation: null
+  error: null
+  nodeMetadataSpec: |-
+    capitalized: SHIFT_SALES
+    short: Manual_S3
+    tagColor: gray
+    plural: Manual_S3s
+
+    config:
+    - groupName: File Location
+      items: 
+
+      - displayName: Stage
+        attributeName: stage
+        type: dropdownSelector
+        default: "s3load"
+        options:
+        - "s3load"
+        isRequired: true
+
+      - displayName: Stage Path
+        attributeName: stagePath
+        type: textBox
+        default: "/analytics/shift_sales/"
+        isRequired: false
+
+    - groupName: Landing Details 
+      items:
+      - displayName: Table Name
+        attributeName: tableName
+        type: textBox
+        default: "SHIFT_SALES"
+        isRequired: true
+name: Manual_S3
+type: NodeType

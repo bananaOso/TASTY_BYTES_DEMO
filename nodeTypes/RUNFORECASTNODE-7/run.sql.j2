@@ -1,0 +1,46 @@
+{% set source = sources[0] %}
+{% set src_node = source.dependencies[0].node %}
+{% set forecast_name = config.selected_forecast_model%}
+
+{{ stage('Truncate Forecast table') }}
+TRUNCATE IF EXISTS {{ this }}
+
+{{ stage('Populate Forecast Table with Historical Data') }}
+
+INSERT INTO {{ this }}
+(
+    "{{config.tgtcol.name}}",
+    "{{config.tscol.name}}" ,
+    "FORECAST",
+    "LOWER_BOUND",
+    "UPPER_BOUND"   
+)
+SELECT 
+    sum({{config.tgtcol.name}}) as {{config.tgtcol.name}},
+    "{{config.tscol.name}}" ,
+    null as "FORECAST",
+    null as "LOWER_BOUND",
+    null as "UPPER_BOUND"
+{{ source.join }}
+group by {{config.tscol.name}}
+
+
+{{ stage('Insert Forecast data') }}
+BEGIN
+
+    CALL {{ ref_no_link(node.location.name, forecast_name) }}!FORECAST(FORECASTING_PERIODS=>{{ config.fcdays }});
+INSERT INTO {{ this }}
+    (
+        "{{config.tscol.name}}",
+        "FORECAST",
+        "LOWER_BOUND",
+        "UPPER_BOUND"
+    )
+    SELECT 
+        "TS",
+        "FORECAST",
+        "LOWER_BOUND",
+        "UPPER_BOUND"
+    FROM TABLE(RESULT_SCAN(-1)) RES;
+
+ END

@@ -1,0 +1,6 @@
+excludeSelector: ""
+fileVersion: 1
+id: "2"
+includeSelector: "+{ location: DW name: DIM_CUSTOMER } OR +{ location: DW name: FCT_ORDERS_LINEITEM }"
+name: Refresh BI Star Schema
+type: Job

@@ -1,0 +1,8 @@
+defaultStorageMapping: DW
+fileVersion: 1
+locations:
+  - 3RD_PARTY_DATA
+  - DW
+  - RAW_CUSTOMER
+  - RAW_POS
+  - SNOWPARK_LANDING

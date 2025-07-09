@@ -1,0 +1,947 @@
+fileVersion: 1
+id: "1"
+macroString: |-
+  {% import "test-utility-1-1-0" as testUtils with context %}
+  {% macro snake_case(column)%}
+    {{(column.name[0]|upper + column.name[1:]|replace('A','_A')|replace('B','_B')|replace('C','_C')|replace('D','_D')|replace('E','_E')|replace('F','_F')|replace('G','_G')|replace('H','_H')|replace('I','_I')|replace('J','_J')|replace('K','_K')|replace('L','_L')|replace('M','_M')|replace('N','_N')|replace('O','_O')|replace('P','_P')|replace('Q','_Q')|replace('R','_R')|replace('S','_S')|replace('T','_T')|replace('U','_U')|replace('V','_V')|replace('W','_W')|replace('X','_X')|replace('Y','_Y')|replace('Z','_Z')|upper)|replace("_I_D","_ID")}}
+  {%- endmacro %}
+
+  {%- macro clean_date(dt) -%}
+
+      {% if dt | length > 10 %}
+          left({{ dt }}, 10)
+      {% else %}
+          {{ dt }}
+      {% endif %}
+
+  {%- endmacro -%}
+
+  {%- macro compare_date1_before_date2_conditional(date1_raw, date2_raw, expr) -%}
+
+      {% set date1 = clean_date(date1_raw) %}
+      {% set date2 = clean_date(date2_raw) %}
+
+          CASE
+              WHEN ({{ date1 }} IS NULL) or ({{ date2 }} IS NULL)
+                  THEN TRUE
+              WHEN least(length({{ date1 }}), length({{ date2 }})) = 7 -- check year month
+                  THEN substr({{ date1 }}, 1, 7) < substr({{ date2 }}, 1, 7)
+              WHEN least(length({{ date1 }}), length({{ date2 }})) = 4 -- check year
+                  THEN substr({{ date1 }}, 1, 4) < substr({{ date2 }}, 1, 4)
+              WHEN least(length({{ date1 }}), length({{ date2 }})) = 10 -- check year-month-day
+                  THEN {{ date1 }} < {{ date2 }}
+              ELSE FALSE
+       END
+
+  {%- endmacro -%}
+
+  {% macro retrieve_models(database_name, schema_name) %}
+      {% set query_retrieve_model_list %}
+      SHOW SNOWFLAKE.ML.FORECAST
+      in {{database_name}}.{{schema_name}}
+      {% endset %}
+
+      {% set model_results = run_query(query_retrieve_model_list) %}
+
+      {{ return(model_results) }}
+  {%- endmacro -%}
+
+  {#-- The below block of code initialises variables in case of node typess using advance deployment strategy #}
+
+  {% if desiredState %}
+      {% set columns = desiredState.columns %}
+      {% set storageLocations = desiredState.storageLocations %}
+      {% set config = desiredState.config %}
+      {% set sources = desiredState.sources %}
+      {% set node = desiredState.node %}
+      {% set parameters = desiredState.parameters %}
+  {% endif %}
+
+  {%- macro unit_measure(column) -%}
+      CASE WHEN {{ column }} = 'EA' THEN 'SAP UNIT' ELSE 'NOT AWARE' END
+  {%- endmacro %}
+
+  {%- macro PRD_ID(column) -%}
+      CASE WHEN {{ column }} = 707 THEN '1' ELSE '0' END
+  {%- endmacro %}
+
+  {#-- This macro will drop a table / view / dynamic table if it already exists as a different or the same object type #}
+  {#-- Errors can occur when creating a same named object of a different type #}
+
+  {% macro dropTblView() %}
+
+    {%- set db = ref_no_link(node.location.name, node.name).split('.')[0]  %} 
+    {%- set sch = ref_no_link(node.location.name, node.name).split('.')[1]  %} 
+    {%- set obj = "{{ node.name }}"  %} 
+
+      begin
+          let db varchar := '{{db}}';
+          let sch varchar := '{{sch}}';
+          let obj varchar := '{{obj}}';
+
+          begin
+              execute immediate 'drop table if exists ' || db || '.' || sch || '.' || obj;    
+          exception
+              when statement_error then
+                  null;
+          end;
+
+          begin
+              execute immediate 'drop view if exists ' || db || '.' || sch || '.' || obj;    
+          exception
+              when statement_error then
+                  null;
+          end;
+
+          begin
+              execute immediate 'drop dynamic table if exists ' || db || '.' || sch || '.' || obj;    
+          exception
+              when statement_error then
+                  null;
+          end;
+
+          begin
+              execute immediate 'drop task if exists ' || db || '.' || sch || '.' || obj;    
+          exception
+              when statement_error then
+                  null;
+          end;
+      end;
+  {% endmacro %}
+
+  {% macro resumeRootTask() %}
+  {% set tgtDb = ref_no_link(desiredState.node.location.name, desiredState.node.name).split('.')[0] %} 
+  {% set tgtSch = ref_no_link(desiredState.node.location.name, desiredState.node.name).split('.')[1] %} 
+  {%- set fqRootTaskName = '' + tgtDb + '.' + tgtSch + '.' + desiredState.config.rootTask + ''-%} 
+
+  begin
+      let sqlDml := 'select system$task_dependents_enable(''''{{fqRootTaskName}}'''')';
+      execute immediate sqlDml;
+          exception
+              when statement_error then
+              return 'Task already running';
+      return 'Task resumed';
+  end;
+  {% endmacro %}
+
+  {% macro dup_rename() %}
+      {{ sources[0].columns | selectattr('id','equalto',column.id) | map(attribute='sourceColumns') | first | map(attribute='node') | map(attribute='name') | first + "_" + sources[0].columns | selectattr('id','equalto',column.id) | map(attribute='sourceColumns') | first | map(attribute='column') | map(attribute='name') | first }}
+  {%- endmacro %}
+
+  {%- macro partition_by() -%}
+
+      {%- set nsVariables = namespace(partition="") -%}
+      {%- set sourceTableName = node.name -%}
+
+      {%- for i in config.partitionBy.get('items') -%}
+          {%- set colName = i.partColName.name -%}
+          {%- if loop.first -%}
+              {%- set nsVariables.partition = getSourceNameFromColumnName(colName) + '."' + colName + '"' -%}
+          {%- else -%}
+              {%- set nsVariables.partition = nsVariables.partition + ',' + getSourceNameFromColumnName(colName) + '."' + colName + '"' -%}
+          {%- endif -%}
+
+      {%- endfor -%}
+
+      {{- nsVariables.partition -}}
+  {%- endmacro -%}
+
+  {% macro order_by_col(return) %}
+
+      {% set nsVariables = namespace(orderBy="") -%}
+
+      {% if config.recordVersioning in ('Datetime Column','Numeric Column') -%}
+          {% set datetimeNumericColSort = config.orderBy.get('items') -%}
+          {% set dateTimeCol = datetimeNumericColSort  | map(attribute='colName.name') | first -%}        
+          {% set nsVariables.orderBy = getSourceNameFromColumnName(dateTimeCol) + '."' + dateTimeCol + '"' -%}
+      {% else -%}
+          {% set dateTimeColSort = config.orderByDateTime.get('items') -%}
+          {% set dateCol = dateTimeColSort | map(attribute='colNameDate.name') | first -%}
+          {% set timeCol = dateTimeColSort | map(attribute='colNameTimestamp.name') | first -%}
+          {% set nsVariables.orderBy = 'to_timestamp(' + getSourceNameFromColumnName(dateCol) + '."' + dateCol + '" || ' + '\'T\'' + ' ||' + getSourceNameFromColumnName(timeCol) + '."' + timeCol + '")' -%}
+      {% endif -%}
+
+      {{ nsVariables.orderBy }}
+
+  {% endmacro %}
+
+
+  {% macro dimensionHistoryPk() %}
+      {%- set nsVariables = namespace(dimensionHistoryColumns="") -%}
+
+      {%- set partitionBy = partition_by().split(",") -%}
+      {%- set orderBy = order_by_col() -%}
+
+      {%- for col in partitionBy -%}
+          {%- if loop.first -%}
+              {%- set nsVariables.dimensionHistoryColumns = col -%}
+          {%- else -%}
+              {%- set nsVariables.dimensionHistoryColumns = nsVariables.dimensionHistoryColumns + ' || ' + '\'-\'' + ' ||' + col -%}
+          {%- endif -%}
+      {%- endfor -%}
+
+      {%- set nsVariables.dimensionHistoryColumns = nsVariables.dimensionHistoryColumns + ' || ' + '\'-\'' + ' || date_part(epoch_milliseconds, ' + orderBy + ')' -%}
+
+      {{- nsVariables.dimensionHistoryColumns -}}
+
+  {% endmacro %}
+
+  {% macro sourceTable() %}
+      {%- set nsVariables = namespace(partition="") -%}
+      {% set sourceTableName = desiredState.node.name %}
+
+      {%- for i in desiredState.config.partitionBy.get('items') -%}
+
+      {%- if loop.first -%}
+          {%- set nsVariables.partition = '"' + sourceTableName + '"."' + i.partColName.name + '"' -%}
+      {%- else -%}
+          {%- set nsVariables.partition = nsVariables.partition + ',"' + sourceTableName + '"."' + i.partColName.name + '"' -%}
+      {%- endif -%}
+
+      {%- endfor %}
+
+      {{- nsVariables.partition -}}
+
+  {% endmacro %}
+
+
+  {%- macro getColumnId( colName ) -%}
+
+      {%- set columnId = columns | selectattr('name','equalto',colName) | map(attribute='id') | first -%}
+
+      {{- columnId -}}
+
+  {%- endmacro -%}
+
+  {% macro getSourceNameFromColumnName( colName ) %}
+
+      {%- set sourceObject = sources[0].columns | selectattr('id','eq',getColumnId( colName )) | map(attribute='sourceColumns')  | first | map(attribute='node.name') | first -%}
+
+      "{{- sourceObject -}}"
+
+  {% endmacro %}
+
+  {% macro getSourceNameFromColumnId( colId ) %}
+
+      {%- set sourceObject = sources[0].columns | selectattr('id','eq',colId) | map(attribute='sourceColumns')  | first | map(attribute='node.name') | first -%}
+
+      "{{- sourceObject -}}"
+
+  {% endmacro %}
+
+  {%- macro ref_raw(location_name, node_name) -%}
+      {%- raw -%}{{ ref('{% endraw %}{{- location_name }}{% raw %}', '{% endraw %}{{ node_name }}{% raw %}') }}{% endraw %}
+  {%- endmacro -%}
+
+  {%- macro ref_no_link_raw(location_name, node_name) -%}
+      {% raw %}{{ ref_no_link('{% endraw %}{{ location_name }}{% raw %}', '{% endraw %}{{ node_name }}{% raw %}') }}{% endraw %}
+  {%- endmacro -%}
+
+  {%- macro ref_link_raw(location_name, node_name) -%}
+      {% raw %}{{ ref_link('{% endraw %}{{ location_name }}{% raw %}', '{% endraw %}{{ node_name }}{% raw %}') }}{% endraw %}
+  {%- endmacro -%}
+
+
+  {%- macro join_columns() -%}
+      {%- set nsVariables = namespace(partition="") -%}
+      {%- set sourceTableName = node.name -%}
+
+      {%- for i in config.partitionBy.get('items') -%}
+          {%- set colName = i.partColName.name -%}
+          {%- if loop.first -%}
+              {%- set nsVariables.partition = colName -%}
+          {%- else -%}
+              {%- set nsVariables.partition = nsVariables.partition + ',' + colName -%}
+          {%- endif -%}
+
+      {%- endfor -%}
+
+      {{- nsVariables.partition -}}
+
+  {%- endmacro -%}
+
+
+  {#-- This macro will frame the order by clause with the columns and sort order specified in config #}
+  {#-- Input parmeters   - None #}
+  {#-- Return            - Order by clause #}
+
+  {%- macro sortorder_by_colv(return) -%}
+      {%- set nsVariables = namespace(sortcolNames="") -%}
+      {%if config.orderby %}
+          {%- for i in config.orderbycolumn.get('items') -%}
+              {%- set colName = i.sortColName.name -%}
+              {%- set colOrder = i.sortOrder -%}
+  	        {%- if loop.first -%}	      
+  		        {%- set nsVariables.sortcolNames = '"' + colName + '"' + colOrder -%}	  
+  	        {%- else -%}      
+  		        {%- set nsVariables.sortcolNames = nsVariables.sortcolNames + ',' + '"' + colName + '"' + colOrder-%}	  
+  	        {%- endif -%}
+          {%- endfor -%}	
+              {%- set nsVariables.sortcolNames = 'order by' + nsVariables.sortcolNames -%}
+   
+      {% endif %} 
+      
+      {{- nsVariables.sortcolNames -}}
+   
+  {%- endmacro -%}
+
+
+
+  {#-- This macro will split the join clause into from and rest of the clauses like where,groupby,orderby ,qualify  #}
+  {#-- Input parmeters   - joinclause #}
+  {#-- Return            - from clause and other clauses #}
+
+
+  {%- macro get_clause( joinclause , ret_clause ) -%}
+
+              {% set join_clause = joinclause %}
+              {% set has_where_clause = 'where'in join_clause %}
+              {% set has_WHERE_clause = 'WHERE'in join_clause %}
+              {% set has_order_clause = 'order by'in join_clause %}
+              {% set has_ORDER_clause = 'ORDER BY'in join_clause %}
+              {% set has_group_clause =  'group by'in join_clause %}
+              {% set has_GROUP_clause = 'GROUP BY'in join_clause %}
+              {% set has_qualify_clause =  'qualify'in join_clause %}
+              {% set has_QUALIFY_clause = 'QUALIFY'in join_clause %}
+
+             
+
+              {% set clause='default' %}
+
+              {% if has_where_clause %}
+
+                  {% set keyword='where'%} 
+                  {% set clause='where_clause' %}
+    
+              {% elif  has_WHERE_clause %}
+
+                   {% set keyword='WHERE'%}
+                   {% set clause='where_clause' %}
+              {% endif %}
+
+              {% if has_group_clause and clause != 'where_clause'  %}
+
+                   {% set keyword='group by'%}
+                   {% set clause='group_clause' %}
+              
+              {% elif  has_GROUP_clause and clause != 'where_clause' %}
+
+                   {% set keyword='GROUP BY'%}
+                   {% set clause='group_clause' %}
+
+              {% endif %}
+  			
+              {% if has_qualify_clause and clause != 'where_clause' and clause != 'group_clause'  %}
+
+                   {% set keyword='qualify'%}
+                   {% set clause='qualify_clause' %}
+              
+              {% elif  has_QUALIFY_clause and clause != 'where_clause' and clause != 'group_clause'  %}
+
+                   {% set keyword='QUALIFY'%}
+                   {% set clause='qualify_clause' %}
+
+              {% endif %}            
+
+  			{% if has_order_clause and  clause != 'where_clause' and clause != 'group_clause' and clause != 'qualify_clause' %}
+
+                   {% set keyword='order by'%}
+                   {% set clause='order_clause' %}
+              
+              {% elif has_ORDER_clause and clause != 'where_clause' and clause != 'group_clause' and clause != 'qualify_clause' %}
+
+                   {% set keyword='ORDER BY'%}
+                   {% set clause='order_clause' %}
+
+              {% endif %}
+
+
+
+              {% if clause == 'where_clause' %}
+                 {% set parts = join_clause.split(keyword) %}
+                 {% set from_clause = parts[0] %}
+                 {% set add_clause = 'AND' + join_clause.split(keyword)[1] %}
+
+              {% elif clause == 'group_clause' %}
+
+                 {% set parts = join_clause.split(keyword) %}
+                 {% set from_clause = parts[0] %}
+                 {% set add_clause = 'group by' + join_clause.split(keyword)[1] %}
+
+              
+              {% elif clause == 'qualify_clause' %}
+
+                 {% set parts = join_clause.split(keyword) %}
+                 {% set from_clause = parts[0] %}
+                 {% set add_clause = 'qualify' + join_clause.split(keyword)[1] %}
+
+
+              {% elif clause == 'order_clause' %}
+
+                 {% set parts = join_clause.split(keyword) %}
+                 {% set from_clause = parts[0] %}
+                 {% set add_clause =  'order by' + join_clause.split(keyword)[1] %}
+                 
+
+              {% else %}
+
+                 {% set from_clause = join_clause %}
+                 {% set add_clause = '' %}
+
+              {% endif %}
+  			
+  			{% if ret_clause == 'from' %}
+  			   {{ from_clause }}
+  			{% else %}
+  			   {{ add_clause }}
+  			{% endif %}
+  			
+  			
+  {%- endmacro -%}
+
+        {#------------------------------------------------------------------------------------------------------#}
+        {#-- Global variables of datavault4coalesce                                                           --#}
+        {#--                                                                                                  --#}
+        {#-- The following variables can be customized to implement your own DV standard definition.          --#}
+        {#-- They will be used in the macros found below.                                                     --#}
+        {#-- Refer to official wiki: https://github.com/ScalefreeCOM/datavault4coalesce/wiki/Global-variables --#}
+        {#------------------------------------------------------------------------------------------------------#}
+        {%- set datavault4coalesce = namespace(
+             config = {
+             "ldts_alias": "LDTS",
+             "rsrc_alias": "RSRC", 
+             "ledts_alias": "LEDTS",
+             "stg_alias": "STG", 
+             "snapshot_trigger_column": "IS_ACTIVE",
+             "use_object_name_prefix": TRUE,
+             "sdts_alias": "SDTS",
+             "is_current_col_alias": "IS_CURRENT", 
+             "hash": "MD5", 
+             "hash_datatype": "STRING", 
+             "hash_input_case_sensitive": "TRUE",
+             "hash_passthrough_input_transformations": "TRUE",
+             "beginning_of_all_times": "0001-01-01T00:00:01",
+             "end_of_all_times": "8888-12-31T23:59:59",
+             "timestamp_format": "YYYY-MM-DDTHH24:MI:SS", 
+             "default_unknown_rsrc": "SYSTEM", 
+             "default_error_rsrc": "ERROR", 
+             "rsrc_default_dtype": "STRING", 
+             "stg_default_dtype": "STRING", 
+             "error_value__STRING": "'(error)'", 
+             "error_value_alt__STRING": "'e'", 
+             "unknown_value__STRING": "'(unknown)'",
+             "unknown_value_alt__STRING": "'u'"
+             }
+        ) -%}
+
+        {%- macro ref_raw(location_name, node_name) -%}
+            {% raw %}{{ ref('{% endraw %}{{ location_name }}{% raw %}', '{% endraw %}{{ node_name }}{% raw %}') }}{% endraw %}
+        {%- endmacro -%}
+
+        {%- macro ref_no_link_raw(location_name, node_name) -%}
+            {% raw %}{{ ref_no_link('{% endraw %}{{ location_name }}{% raw %}', '{% endraw %}{{ node_name }}{% raw %}') }}{% endraw %}
+        {%- endmacro -%}
+
+        {%- macro ref_link_raw(location_name, node_name) -%}
+            {% raw %}{{ ref_link('{% endraw %}{{ location_name }}{% raw %}', '{% endraw %}{{ node_name }}{% raw %}') }}{% endraw %}
+        {%- endmacro -%}
+
+        {#-- Utility macro: outputs a SQL function to convert input string into a timestamp of dynamic format. --#}
+        {%- macro datavault4coalesce__string_to_timestamp(format, timestamp) -%}
+        TO_TIMESTAMP('{{ timestamp }}', '{{ format }}')
+        {%- endmacro -%}
+
+        {#-- Utility macro: check if string object is an expression --#}
+        {%- macro datavault4coalesce__is_expression(obj) -%}
+            {%- if obj is string -%}
+                {%- if (obj|first == "'" and obj|last == "'") or ("(" in obj and ")" in obj) or "::" in obj or "||" in obj -%}
+                    {{ true }}
+                {%- else -%}
+                    {{ false }}
+                {%- endif -%}
+            {%- else -%}
+                {{ false }}
+            {%- endif -%}
+        {%- endmacro -%}
+
+        {#-- Utility macro: check if object exists, is defined and not empty --#}
+        {%- macro datavault4coalesce__is_something(obj) -%}
+            {%- if obj is not none and obj is defined and obj -%}
+                {{ true }}
+            {%- else -%}
+                {{ false }}
+            {%- endif -%}
+        {%- endmacro -%}
+
+        {#-- Utility macro: wrap string input between escape characters --#}
+        {%- macro datavault4coalesce__escape_column_name(column) -%}
+            {%- set escape_char_left  = '"' -%}
+            {%- set escape_char_right = '"' -%}
+            {%- set escaped_column_name = escape_char_left ~ column|upper|replace(escape_char_left, '')|replace(escape_char_right, '')|trim ~ escape_char_right|indent(4) -%}
+            
+          {{ escaped_column_name }}
+        {%- endmacro -%}
+
+        {#-- Utility macro: wrap input between escape characters --#}
+        {%- macro datavault4coalesce__as_constant(column_str) -%}
+            {%- if column_str is not none and column_str is string and column_str -%}
+                {%- if column_str|first == "!" -%}
+                    {{- "'" ~ column_str[1:] ~ "'" -}}
+                {%- else -%}
+                    {%- if datavault4coalesce__is_expression(column_str) -%}
+                        {{- column_str -}}
+                    {%- else -%}
+                        {{- datavault4coalesce__escape_column_name(column_str) -}}
+                    {%- endif -%}
+                {%- endif -%}
+            {%- endif -%}
+        {%- endmacro -%}
+
+        {#-----------------------------------------------------------------------------------------------#}
+        {#-- DV Utility macro: generates a string as the record source.                                --#}
+        {#--                                                                                           --#}
+        {#-- The record source is a standard, technical attribute in Data Vault 2.0 object structures. --#}
+        {#-- It is used to identify the origin of a data record and should contain a detailed path     --#}
+        {#--    to trace a record back to its source table and source system.                          --#}
+        {#-----------------------------------------------------------------------------------------------#}
+        {%- macro record_source() -%}
+        {%- if sources[0].dependencies -%}
+             {% set src = storageLocations | selectattr('name', "equalto", sources[0].dependencies[0].node.location.name) | list | first %} 
+             '"{{src.database}}"."{{src.schema}}"."{{sources[0].dependencies[0].node.name}}"'
+        {%- else -%}
+             'Missing Dependencies!'
+        {%- endif -%}
+        {%- endmacro -%}
+
+        {#--------------------------------------------------------------------------------------------------#}
+        {#-- DV Utility macro: Generate default values for ghost record.                                  --#}
+        {#--                                                                                              --#}
+        {#-- As part of the INSERT statements for DV2.0 ghost records, the output of this macro processes --#}
+        {#-- table columns and generate default values based on the column data types.                    --#}
+        {#-- Usage: create template for node type DataVault by Scalefree: Stage.                          --#}
+        {#--                                                                                              --#}
+        {#-- Parameters:                                                                                  --#}
+        {#--     column_name: name of table column to be processed.                                       --#}
+        {#--     datatype: datatype of table column.                                                      --#}
+        {#--     ghost_record_type : type of the ghost record being generated.                            --#}
+        {#--                         By default, Datavault4coalesce uses 2 types: 'unknown' and 'error'.  --#}
+        {#--     hash: indicates if the table column being process is either a hash key or a change hash. --#}
+        {#--           Values: true | false                                                                 --#}
+        {#--     hash_algo: hash algorithm being used for the hashing function.                           --#}
+        {#--------------------------------------------------------------------------------------------------#}
+        {%- macro datavault4coalesce__ghost_record_per_datatype(column_name, datatype, ghost_record_type, hash, hash_algo=none) -%}
+
+        {%- set beginning_of_all_times = datavault4coalesce.config.beginning_of_all_times -%}
+        {%- set end_of_all_times = datavault4coalesce.config.end_of_all_times -%}
+        {%- set timestamp_format = datavault4coalesce.config.timestamp_format -%}
+        {%- set unknown_value__STRING = datavault4coalesce.config.unknown_value__STRING -%}
+        {%- set unknown_value_alt__STRING = datavault4coalesce.config.unknown_value_alt__STRING -%}
+        {%- set error_value__STRING = datavault4coalesce.config.error_value__STRING -%}
+        {%- set error_value_alt__STRING = datavault4coalesce.config.error_value_alt__STRING -%}
+
+        {%- if hash %}
+
+             {%- set datatype = datatype|upper -%}
+             {%- set hash_alg = datavault4coalesce__hash_algorithm(hash_function=hash_algo, hash_datatype=datatype) -%}
+             {%- set unknown_key = datavault4coalesce__unknown_key(hash_function=hash_algo, hash_datatype=datatype) -%}
+             {%- set error_key = datavault4coalesce__error_key(hash_function=hash_algo, hash_datatype=datatype) -%}
+
+             {%- if ghost_record_type == 'unknown' -%}
+                  {{ unknown_key }} as {{ column_name }}
+             {%- elif ghost_record_type == 'error' -%}
+                  {{ error_key }} as {{ column_name }}
+             {% endif %}
+
+        {% else %}
+
+             {%- if ghost_record_type == 'unknown' -%}
+             {%- if datatype.upper().startswith('TIMESTAMP') or datatype.upper().startswith('DATE') -%}{{ datavault4coalesce__string_to_timestamp(timestamp_format, beginning_of_all_times) }} AS {{ column_name }}
+             {% elif datatype.upper().startswith('STRING') or datatype.upper().startswith('VARCHAR') %}
+                  {%- if datatype.upper().startswith('VARCHAR') and datatype[8:-1]|int >= unknown_value__STRING|length -%} {{unknown_value__STRING}} AS {{ column_name }}
+                  {%- elif datatype.upper().startswith('STRING') -%} {{unknown_value__STRING}} AS {{ column_name }}
+                  {% else %} {{unknown_value_alt__STRING}} AS {{ column_name }}
+                  {% endif %}
+             {% elif datatype in ['NUMBER','INT','FLOAT','DECIMAL'] or datatype.upper().startswith('NUMBER') %}0 AS {{ column_name }}
+             {% elif datatype == 'BOOLEAN' %}CAST('FALSE' AS BOOLEAN) AS {{ column_name }}
+             {% else %}NULL AS {{ column_name }}
+             {% endif %}
+             
+             {%- elif ghost_record_type == 'error' -%}
+             {%- if datatype.upper().startswith('TIMESTAMP') or datatype.upper().startswith('DATE') -%}{{ datavault4coalesce__string_to_timestamp(timestamp_format, end_of_all_times) }} AS {{ column_name }}
+             {% elif datatype.upper().startswith('STRING') or datatype.upper().startswith('VARCHAR') %}
+                  {%- if datatype.upper().startswith('VARCHAR') and datatype[8:-1]|int >= error_value__STRING|length -%} {{error_value__STRING}} AS {{ column_name }}
+                  {%- elif datatype.upper().startswith('STRING') -%} {{error_value__STRING}} AS {{ column_name }}
+                  {% else %} {{error_value_alt__STRING}} AS {{ column_name }}
+                  {% endif %}
+             {% elif datatype in ['NUMBER','INT','FLOAT','DECIMAL'] or datatype.upper().startswith('NUMBER') %}-1 AS {{ column_name }}
+             {% elif datatype == 'BOOLEAN' %}CAST('FALSE' AS BOOLEAN) AS {{ column_name }}
+             {% else %}NULL AS {{ column_name }}
+             {% endif %}
+             {%- endif -%}
+
+        {%- endif -%}
+        {%- endmacro -%}
+
+        {#---------------------------------------------------------------------------------------------#}
+        {#-- DV Utility macro: Output unknown zero key for ghost record.                             --#}
+        {#--                                                                                         --#}
+        {#-- Generates unknown zero key based on the hashing algorithm being used for ghost records. --#}
+        {#-- Usage: main hashing macro datavault4coalesce__hash                                      --#}
+        {#--        and macro for ghost record datavault4coalesce__ghost_record_per_datatype         --#}
+        {#--                                                                                         --#}
+        {#-- Parameters:                                                                             --#}
+        {#--     hash_function: hashing algorithm.                                                   --#}
+        {#--     hash_datatype: datatype of hash column.                                             --#}
+        {#---------------------------------------------------------------------------------------------#}
+        {%- macro datavault4coalesce__unknown_key(hash_function=none, hash_datatype=none) -%}
+             {%- if hash_function is none -%}
+                  {%- set hash_function = datavault4coalesce.config.hash -%}
+             {%- endif -%}
+             {%- if hash_datatype is none -%}
+                  {%- set hash_datatype = datavault4coalesce.config.hash_datatype -%}
+             {%- endif -%}     
+
+             {%- set dict_result = {} -%}
+             {%- set unknown_key = '' -%}
+
+             {%- if hash_function == 'MD5' -%}
+                  {%- if 'VARCHAR' in hash_datatype or 'CHAR' in hash_datatype or 'STRING' in hash_datatype or 'TEXT' in hash_datatype %}
+                       {%- set unknown_key = '!00000000000000000000000000000000' -%}
+                  {%- elif 'BINARY' in hash_datatype -%}  
+                       {%- set unknown_key = "TO_BINARY('00000000000000000000000000000000')" -%}     
+                  {%- endif -%}                       
+             {%- elif hash_function == 'SHA1' or hash_function == 'SHA1_HEX' or hash_function == 'SHA' -%} 
+                  {%- if 'VARCHAR' in hash_datatype or 'CHAR' in hash_datatype or 'STRING' in hash_datatype or 'TEXT' in hash_datatype %}
+                       {%- set unknown_key = '!0000000000000000000000000000000000000000' -%}
+                  {%- elif 'BINARY' in hash_datatype -%}
+                       {%- set unknown_key = "TO_BINARY('0000000000000000000000000000000000000000')" -%}     
+                  {%- endif -%}
+             {%- elif hash_function == 'SHA2' or hash_function == 'SHA2_HEX' or hash_function == 'SHA256'  -%}
+                  {%- if 'VARCHAR' in hash_datatype or 'CHAR' in hash_datatype or 'STRING' in hash_datatype or 'TEXT' in hash_datatype %}
+                       {%- set unknown_key = '!0000000000000000000000000000000000000000000000000000000000000000' -%}
+                  {%- elif 'BINARY' in hash_datatype -%}
+                       {%- set unknown_key = "TO_BINARY('0000000000000000000000000000000000000000000000000000000000000000')" -%}  
+                  {%- endif -%}   
+             {%- endif -%}
+
+             {% set unknown_key = datavault4coalesce__as_constant(unknown_key) %}
+             {{ unknown_key }}
+
+        {%- endmacro -%}
+
+        {#---------------------------------------------------------------------------------------------#}
+        {#-- DV Utility macro: Output error zero key for ghost record.                               --#}
+        {#--                                                                                         --#}
+        {#-- Generates error zero key based on the hashing algorithm being used for ghost records.   --#}
+        {#-- Usage: main hashing macro datavault4coalesce__hash                                      --#}
+        {#--        and macro for ghost record datavault4coalesce__ghost_record_per_datatype         --#}
+        {#--                                                                                         --#}
+        {#-- Parameters:                                                                             --#}
+        {#--     hash_function: hashing algorithm.                                                   --#}
+        {#--     hash_datatype: datatype of hash column.                                             --#}
+        {#---------------------------------------------------------------------------------------------#}
+        {%- macro datavault4coalesce__error_key(hash_function=none, hash_datatype=none) -%}
+             {%- if hash_function is none -%}
+                  {%- set hash_function = datavault4coalesce.config.hash -%}
+             {%- endif -%}
+             {%- if hash_datatype is none -%}
+                  {%- set hash_datatype = datavault4coalesce.config.hash_datatype -%}
+             {%- endif -%}  
+
+             {%- set dict_result = {} -%}
+             {%- set error_key = '' -%}
+
+             {%- if hash_function == 'MD5' -%}
+                  {%- if 'VARCHAR' in hash_datatype or 'CHAR' in hash_datatype or 'STRING' in hash_datatype or 'TEXT' in hash_datatype %}
+                       {%- set error_key = '!ffffffffffffffffffffffffffffffff' -%}
+                  {%- elif 'BINARY' in hash_datatype -%}  
+                       {%- set error_key = "TO_BINARY('ffffffffffffffffffffffffffffffff')" -%}     
+                  {%- endif -%}          
+             {%- elif hash_function == 'SHA1' or hash_function == 'SHA1_HEX' or hash_function == 'SHA' -%} 
+                  {%- if 'VARCHAR' in hash_datatype or 'CHAR' in hash_datatype or 'STRING' in hash_datatype or 'TEXT' in hash_datatype %}
+                       {%- set error_key = '!ffffffffffffffffffffffffffffffffffffffff' -%}
+                  {%- elif 'BINARY' in hash_datatype -%}
+                       {%- set error_key = "TO_BINARY('ffffffffffffffffffffffffffffffffffffffff')" -%}        
+                  {%- endif -%}
+             {%- elif hash_function == 'SHA2' or hash_function == 'SHA2_HEX' or hash_function == 'SHA256'  -%}
+                  {%- if 'VARCHAR' in hash_datatype or 'CHAR' in hash_datatype or 'STRING' in hash_datatype or 'TEXT' in hash_datatype %}
+                       {%- set error_key = '!ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff' -%}
+                  {%- elif 'BINARY' in hash_datatype -%}
+                       {%- set error_key = "TO_BINARY('ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff')" -%}        
+                  {%- endif -%}   
+             {%- endif -%}
+
+             {% set error_key = datavault4coalesce__as_constant(error_key) %}
+             {{ error_key }}
+        {%- endmacro -%}
+
+        {#---------------------------------------------------------------------------------------------#}
+        {#-- DV Utility macro: Hashing algorithm.                                                    --#}
+        {#--                                                                                         --#}
+        {#-- Outputs hashing algorithm and Snowflake function to calculate hashes based on  --#}
+        {#-- If parameters are empty, default options in global variables will be used. --#}
+        {#-- Usage: main hashing macro datavault4coalesce__hash                                      --#}
+        {#--        and macro for ghost record datavault4coalesce__ghost_record_per_datatype         --#}
+        {#--                                                                                         --#}
+        {#-- Parameters:                                                                             --#}
+        {#--     hash_function: hashing algorithm.                                                   --#}
+        {#--     hash_datatype: datatype of hash column.                                             --#}
+        {#---------------------------------------------------------------------------------------------#}
+        {%- macro datavault4coalesce__hash_algorithm(hash_function=none, hash_datatype=none) -%}
+
+             {%- if hash_function is none -%}
+                  {%- set hash_function = datavault4coalesce.config.hash -%}
+             {%- endif -%}
+             {%- if hash_datatype is none -%}
+                  {%- set hash_datatype = datavault4coalesce.config.hash_datatype -%}
+             {%- endif -%}  
+
+             {%- set dict_result = {} -%}
+             {%- set hash_alg = '' -%}
+
+             {%- if hash_function == 'MD5' -%}
+                  {%- if 'VARCHAR' in hash_datatype or 'CHAR' in hash_datatype or 'STRING' in hash_datatype or 'TEXT' in hash_datatype %}
+                       {%- set hash_alg = 'MD5' -%}
+                  {%- elif 'BINARY' in hash_datatype -%}
+                       {%- set hash_alg = 'MD5_BINARY' -%}       
+                  {%- endif -%}
+             {%- elif hash_function == 'SHA1' or hash_function == 'SHA1_HEX' or hash_function == 'SHA' -%} 
+                  {%- if 'VARCHAR' in hash_datatype or 'CHAR' in hash_datatype or 'STRING' in hash_datatype or 'TEXT' in hash_datatype %}
+                       {%- set hash_alg = 'SHA1' -%}
+                  {%- elif 'BINARY' in hash_datatype -%}
+                       {%- set hash_alg = 'SHA1_BINARY' -%}       
+                  {%- endif -%}
+             {%- elif hash_function == 'SHA2' or hash_function == 'SHA2_HEX' or hash_function == 'SHA256' -%}
+                  {%- if 'VARCHAR' in hash_datatype or 'CHAR' in hash_datatype or 'STRING' in hash_datatype or 'TEXT' in hash_datatype %}
+                       {%- set hash_alg = 'SHA2' -%}
+                  {%- elif 'BINARY' in hash_datatype -%}
+                       {%- set hash_alg = 'SHA2_BINARY' -%}       
+                  {%- endif -%}   
+             {%- endif -%}
+
+             {{ hash_alg }}
+
+        {%- endmacro -%}
+
+        {%- macro datavault4coalesce__attribute_standardise() -%}
+        CONCAT('\"', REPLACE(REPLACE(REPLACE(TRIM(CAST([EXPRESSION] AS STRING)), '\\', '\\\\'), '[QUOTE]', '\"'), '[NULL_PLACEHOLDER_STRING]', '--'), '\"')
+        {%- endmacro -%}
+
+        {#---------------------------------------------------------------------------------------------------------#}
+        {#-- Generate the first part of wrapper for hash inputs in DV hashing calculation                        --#}
+        {#-- Usage: in main hashing macro datavault4coalesce__hash.                                                --#}
+        {#--                                                                                                     --#}
+        {#-- Parameters:                                                                                         --#}
+        {#--     case_sensitive  : determines if hash input(s) should be treated with case sensitive.            --#}
+        {#--                       If set to true, all hash inputs will be uppercased before hash operation.     --#}
+        {#--     hash_alg        : overwrites default hash algorithm from global variables.                      --#}
+        {#--                       REMOVEME not needed here                                                      --#}
+        {#--     is_hashdiff     : determines if hash calculation is for a change hash a.k.a. hash difference    --#}
+        {#--                       If set to TRUE, return patterns for hash diff calculation.                    --#}
+        {#--                       If set to FALSE, return patterns for hash key calculation.                    --#}
+        {#--     datatype        : data type of hash input attribute.                                            --#}
+        {#--     zero_key        : default value for zero key - by default, set under the global variables       --#}
+        {#--     alias           : alias for attribute name.                                                     --#}
+        {#--     multi_active_key: list of multi-active keys, if available (i.e. hash in multi-active satellite) --#}
+        {#--     main_hashkey_col: name of the main hash key column, if target is a multi-active satellite.      --#}
+        {#---------------------------------------------------------------------------------------------------------#}
+        {%- macro datavault4coalesce__standardise_prefix(case_sensitive, hash_alg, is_hashdiff, datatype, zero_key, alias, multi_active_key, main_hashkey_col) -%}
+        {%- set dict_result = {} -%}
+        {%- set zero_key = datavault4coalesce__as_constant(column_str=zero_key) -%}
+        {%- set listagg_opening = "" -%}
+
+        {#-- If definition of multi-active key(s) is found, prep string variables:                      --#}
+        {#--     multi_active_key: list of multi-active keys, concatenated with comma delimiter.        --#}
+        {#--     listagg_opening : 1st part of LISTAGG window function, used in                         --#}
+        {#--                       hashing calculation of multi-active satellite's hash diff attribute. --#}
+        {%- if is_hashdiff and multi_active_key is defined and multi_active_key|length>0 -%}
+            {%- set listagg_opening = "LISTAGG(" -%}
+        {%- endif -%}
+
+        {%- if 'VARCHAR' in datatype or 'CHAR' in datatype or 'STRING' in datatype or 'TEXT' in datatype %}
+            {%- if case_sensitive -%}
+                {%- set standardise_prefix = "IFNULL(LOWER({}({}NULLIF(CAST(REGEXP_REPLACE(REGEXP_REPLACE(REGEXP_REPLACE(REGEXP_REPLACE(UPPER(CONCAT(".format(hash_alg, listagg_opening)-%}
+            {%- else -%}
+                {%- set standardise_prefix = "IFNULL(LOWER({}({}NULLIF(CAST(REGEXP_REPLACE(REGEXP_REPLACE(REGEXP_REPLACE(REGEXP_REPLACE(CONCAT(".format(hash_alg, listagg_opening)-%}
+            {%- endif -%}
+
+        {%- else -%}
+            {%- if case_sensitive -%}
+                {%- set standardise_prefix = "IFNULL({}({}NULLIF(CAST(REGEXP_REPLACE(REGEXP_REPLACE(REGEXP_REPLACE(REGEXP_REPLACE(UPPER(CONCAT(".format(hash_alg, listagg_opening)-%}
+            {%- else -%}
+                {%- set standardise_prefix = "IFNULL({}({}NULLIF(CAST(REGEXP_REPLACE(REGEXP_REPLACE(REGEXP_REPLACE(REGEXP_REPLACE(CONCAT(".format(hash_alg, listagg_opening)-%}
+            {%- endif -%}
+        {%- endif -%}
+
+        {{ standardise_prefix }}
+        {%- endmacro -%}
+
+        {#---------------------------------------------------------------------------------------------------------#}
+        {#-- Generate the second part of wrapper for hash inputs in DV hashing calculation                       --#}
+        {#-- Used in main hashing macro datavault4coalesce__hash.                                                --#}
+        {#--     case_sensitive  : determines if hash input(s) should be treated with case sensitive.            --#}
+        {#--                       If set to true, all hash inputs will be uppercased before hash operation.     --#}
+        {#--     hash_alg        : overwrites default hash algorithm from global variables.                      --#}
+        {#--                       REMOVEME not needed here                                                      --#}
+        {#--     is_hashdiff     : determines if hash calculation is for a change hash a.k.a. hash difference    --#}
+        {#--                       If set to TRUE, return patterns for hash diff calculation.                    --#}
+        {#--                       If set to FALSE, return patterns for hash key calculation.                    --#}
+        {#--     datatype        : data type of hash input attribute.                                            --#}
+        {#--     zero_key        : default value for zero key - by default, set under the global variables       --#}
+        {#--     alias           : alias for attribute name.                                                     --#}
+        {#--     multi_active_key: list of multi-active keys, if available (i.e. hash in multi-active satellite) --#}
+        {#--     main_hashkey_col: name of the main hash key column, if target is a multi-active satellite.      --#}
+        {#--------------------------------------------------------------------------------------------------------#}
+        {%- macro datavault4coalesce__standardise_suffix(case_sensitive, hash_alg, is_hashdiff, datatype, zero_key, alias, multi_active_key, main_hashkey_col) -%}
+        {%- set dict_result = {} -%}
+        {%- set ldts_alias = datavault4coalesce.config.ldts_alias -%}
+        {%- set zero_key = datavault4coalesce__as_constant(column_str=zero_key) -%}
+        {%- set listagg_closing = "" -%}
+
+        {#-- If definition of multi-active key(s) is found, prep the following string variables: --#}
+        {#--     multi_active_key: list of multi-active keys, concatenated with comma delimiter. --#}
+        {#--     listagg_closing : 2nd part of LISTAGG window function, used in                  --#}
+        {#--                       hashing calculation of multi-active                           --#}
+        {#--                       satellite's hash diff attribute.                              --#}
+        {%- if is_hashdiff and multi_active_key is defined and multi_active_key|length>0 -%}
+            {%- set multi_active_key = multi_active_key|join(", ") -%}
+            {%- set listagg_closing = ' WITHIN GROUP (ORDER BY "{}") OVER (PARTITION BY "{}", "{}"))'.format(multi_active_key, main_hashkey_col, ldts_alias) -%}
+        {%- endif -%}
+
+        {%- if 'VARCHAR' in datatype or 'CHAR' in datatype or 'STRING' in datatype or 'TEXT' in datatype %}
+            {%- if case_sensitive -%}
+                {%- if alias is not none -%}
+              {%- set standardise_suffix = "\n)), '\\n', '') \n, '\\t', '') \n, '\\v', '') \n, '\\r', '') AS STRING), '[ALL_NULL]')){}, {}) AS {}".format(listagg_closing, zero_key, alias)-%}      
+                {%- else -%}
+              {%- set standardise_suffix = "\n)), '\\n', '') \n, '\\t', '') \n, '\\v', '') \n, '\\r', '') AS STRING), '[ALL_NULL]')){}, {})".format(listagg_closing, zero_key)-%}
+                {%- endif -%}
+            {%- else -%}
+                {%- if alias is not none -%}
+                    {%- set standardise_suffix = "\n), '\\n', '') \n, '\\t', '') \n, '\\v', '') \n, '\\r', '') AS STRING), '[ALL_NULL]')){}, {}) AS {}".format(listagg_closing, zero_key, alias)-%}
+                {%- else -%}
+              {%- set standardise_suffix = "\n), '\\n', '') \n, '\\t', '') \n, '\\v', '') \n, '\\r', '') AS STRING), '[ALL_NULL]')){}, {})".format(listagg_closing, zero_key)-%}
+                {%- endif -%}
+            {%- endif -%}
+
+        {%- else -%}
+            {%- if case_sensitive -%}
+                {%- if alias is not none -%}
+                    {%- set standardise_suffix = "\n)), '\\n', '') \n, '\\t', '') \n, '\\v', '') \n, '\\r', '') AS STRING), '[ALL_NULL]')){}, {}) AS {}".format(listagg_closing, zero_key, alias)-%}
+                {%- else -%}
+                    {%- set standardise_suffix = "\n)), '\\n', '') \n, '\\t', '') \n, '\\v', '') \n, '\\r', '') AS STRING), '[ALL_NULL]')){}, {})".format(listagg_closing, zero_key)-%}
+                {%- endif -%}
+            {%- else -%}
+                {%- if alias is not none -%}
+                    {%- set standardise_suffix = "\n), '\\n', '') \n, '\\t', '') \n, '\\v', '') \n, '\\r', '') AS STRING), '[ALL_NULL]')){}, {}) AS {}".format(listagg_closing, zero_key, alias)-%}
+                {%- else -%}
+                    {%- set standardise_suffix = "\n), '\\n', '') \n, '\\t', '') \n, '\\v', '') \n, '\\r', '') AS STRING), '[ALL_NULL]')){}, {})".format(listagg_closing, zero_key)-%}
+                {%- endif -%}
+            {%- endif -%}
+        {%- endif -%}
+        {{ standardise_suffix }}
+        {%- endmacro -%}
+
+        {#---------------------------------------------------------------------------------#}
+        {#-- Main macro for DV2.0 hashing.                                               --#}
+        {#---------------------------------------------------------------------------------#}
+        {%- macro datavault4coalesce__hash(columns, alias=none, is_hashdiff=false, datatype='STRING', algo='MD5', multi_active_key=[], main_hashkey_col='') -%}
+        {#-- Setup DV2.0 standards for hashing                                           --#}
+        {#--                                                                             --#}
+        {#-- Modify the following settings to implement your DV2.0 hashing standards.    --#}
+        {#--   concat_string: string used to concatenate hash input fields.              --#}
+        {#--                  Recommended: || (double pipes) or _ (underscore)           --#}
+        {#--   quote: character used to quote around hash input fields.                  --#}
+        {#--          Recommended: '"' (double quotes)                                   --#}
+        {#--  null_placeholder_string: ???                                               --#}
+        {#--  hash_input_case_sensitive: case sensitivity settings for hash input.       --#}
+        {%- set concat_string = '||' -%}
+        {%- set quote = '"' -%}
+        {%- set null_placeholder_string = '^^' -%}
+        {%- set hash_input_case_sensitive = datavault4coalesce.config.hash_input_case_sensitive -%}
+
+        {#-- Select hashing algorithm from global variables. --#}
+        {%- set datatype = datatype|upper -%}
+        {%- set hash_alg = datavault4coalesce__hash_algorithm(hash_function=algo, hash_datatype=datatype) -%}
+        {%- set unknown_key = datavault4coalesce__unknown_key(hash_function=algo, hash_datatype=datatype) -%}
+        {%- set error_key = datavault4coalesce__error_key(hash_function=algo, hash_datatype=datatype) -%}
+
+        {%- set attribute_standardise = datavault4coalesce__attribute_standardise() %}
+
+        {#-- Set up a list of columns going into hashing calculation --#}
+        {%- set ns = namespace(columns=[], all_null=[]) -%}
+        {%- set columns_input = columns -%}
+
+        {%- for column in columns_input -%}
+             {%- set ns.columns = ns.columns + [column.name] -%}
+        {%- endfor -%}
+
+        {%- set standardise_prefix = datavault4coalesce__standardise_prefix(case_sensitive=hash_input_case_sensitive, 
+                                                                            hash_alg=hash_alg,
+                                     is_hashdiff=is_hashdiff,
+                                                                            datatype=hash_dtype,
+                                                                            alias=alias, 
+                                                                            zero_key=unknown_key,
+                                                                            multi_active_key=multi_active_key,
+                                                                            main_hashkey_col=main_hashkey_col) -%}
+        {%- set standardise_suffix = datavault4coalesce__standardise_suffix(case_sensitive=hash_input_case_sensitive, 
+                                                                            hash_alg=hash_alg,
+                                                  is_hashdiff=is_hashdiff,
+                                                                            datatype=hash_dtype, 
+                                                                            alias=alias, 
+                                                                            zero_key=unknown_key,
+                                                                            multi_active_key=multi_active_key,
+                                                                            main_hashkey_col=main_hashkey_col) -%}    
+
+        {#-- Start printing SQL for hash calculation --#}
+        {{ standardise_prefix }}
+        {%- for column in columns -%}
+            {%- set ns.all_null = ns.all_null + [null_placeholder_string] -%}
+            {%- if datavault4coalesce.config.hash_passthrough_input_transformations -%}
+                {%- set column_str = datavault4coalesce__as_constant(get_source_transform(column)) -%}
+            {%- else -%}
+                {%- if '.' in column.name %}
+                    {% set column_str = column.name -%}
+                {%- else -%}
+                    {%- set column_str = datavault4coalesce__as_constant(column.name) -%}
+                {%- endif -%}
+            {%- endif -%}
+
+            {{- "\nCOALESCE(({}), '{}')".format(attribute_standardise | replace('[EXPRESSION]', column_str) | replace('[QUOTE]', quote) | replace('[NULL_PLACEHOLDER_STRING]', null_placeholder_string), null_placeholder_string) | indent(4) -}}
+            {{- ",'{}',".format(concat_string) if not loop.last -}}
+
+            {%- if loop.last -%}
+                {{ standardise_suffix | replace('[ALL_NULL]', ns.all_null | join("")) | indent(4) }}
+            {%- else -%}
+                {%- set ns.all_null = ns.all_null + [concat_string] -%}
+            {%- endif -%}
+        {%- endfor -%}
+        {%- endmacro -%}
+
+        {#----------------------------------------------------------------------#}
+        {#-- Outputs name of a single hash key from the direct parent object. --#}
+        {#-- Usage: Node definition of Satellite v1                           --#}
+        {#----------------------------------------------------------------------#}
+        {%- macro get_source_hash_key_column() -%}
+             {%- set srcCols = sources[0].dependencies[0].columns -%}
+             {%- set result = namespace(name='') -%}
+             {% for srcHKCol in srcCols if srcHKCol.is_hk %}
+                  {%- set result.name = srcHKCol.name -%}
+             {%- endfor -%}
+             {{- result.name -}}
+        {%- endmacro -%}
+
+        {#-------------------------------------------------------------------------#}
+        {#-- Outputs list of multi-active keys from the direct parent object     --#}
+        {#-- Usage: Node definition of multi-active satellite v1                 --#}
+        {#--   delimiter: delimiter character to be used in string concatenation --#}
+        {#-------------------------------------------------------------------------#}
+        {%- macro get_source_ma_keys(delimiter=',') -%}
+             {%- set srcCols = sources[0].dependencies[0].columns -%}
+             {%- set result = [] -%}
+             {% for srcMAKey in srcCols if srcMAKey.is_ma_key %}
+                  {%- set result = result.append(srcMAKey.name) -%}
+             {%- endfor -%}
+             {{- result|join(delimiter) -}}
+        {%- endmacro -%}
+name: macro
+type: Macro

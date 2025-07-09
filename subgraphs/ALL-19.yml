@@ -1,0 +1,13 @@
+fileVersion: 1
+id: "19"
+name: ALL
+steps:
+  - 4db780f4-ab51-4f08-b7c2-3faba8105813
+  - 61ee79aa-9a70-4987-baa8-4efba74367fa
+  - 63b21a53-29f6-44fe-b3d6-d35f1f0c1117
+  - 6c8d6db5-c4de-443a-90f2-0ac56b249896
+  - 72cbb28a-faa2-4828-ab70-97b70f44b989
+  - d744f637-117e-4f66-9737-bb022ac06732
+  - e76eee0e-8b78-46d0-9746-acbcf020f58c
+  - fa3afca1-427e-42f4-a0cf-a3197820ad81
+type: Subgraph
