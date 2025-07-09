@@ -1,5 +1,5 @@
 fileVersion: 1
-id: 75f25b73-5bde-4692-ba2e-29b97ba74ca8
+id: 34112971-501e-4af1-993b-e024abb61d35
 name: STG_COUNTRY
 operation:
   config:
@@ -19,8 +19,8 @@ operation:
     columns:
       - appliedColumnTests: {}
         columnReference:
-          columnCounter: 4312d2a9-76f3-4fd3-8efa-31d3119c9ce8
-          stepCounter: 75f25b73-5bde-4692-ba2e-29b97ba74ca8
+          columnCounter: 4deadf05-9426-4654-b9f8-8cf28124e9d5
+          stepCounter: 34112971-501e-4af1-993b-e024abb61d35
         config: {}
         dataType: NUMBER(18,0)
         description: ""
@@ -33,8 +33,8 @@ operation:
             transform: ""
       - appliedColumnTests: {}
         columnReference:
-          columnCounter: 16d3a007-da00-471a-9b82-01a44c6c7d91
-          stepCounter: 75f25b73-5bde-4692-ba2e-29b97ba74ca8
+          columnCounter: 584bc66d-5de4-4798-84fe-c6a6bbaf3c08
+          stepCounter: 34112971-501e-4af1-993b-e024abb61d35
         config: {}
         dataType: VARCHAR(16777216)
         description: ""
@@ -47,8 +47,8 @@ operation:
             transform: ""
       - appliedColumnTests: {}
         columnReference:
-          columnCounter: 12fee0cf-5959-4992-8018-89d605163fe2
-          stepCounter: 75f25b73-5bde-4692-ba2e-29b97ba74ca8
+          columnCounter: 5ecd0ffa-d444-4703-a822-04f9961a2708
+          stepCounter: 34112971-501e-4af1-993b-e024abb61d35
         config: {}
         dataType: VARCHAR(3)
         description: ""
@@ -61,8 +61,8 @@ operation:
             transform: ""
       - appliedColumnTests: {}
         columnReference:
-          columnCounter: 9cad9f51-ce03-4c68-b0ce-de9b274466bd
-          stepCounter: 75f25b73-5bde-4692-ba2e-29b97ba74ca8
+          columnCounter: bea684ce-250c-4bbc-93ba-88bd86348b20
+          stepCounter: 34112971-501e-4af1-993b-e024abb61d35
         config: {}
         dataType: VARCHAR(2)
         description: ""
@@ -75,8 +75,8 @@ operation:
             transform: ""
       - appliedColumnTests: {}
         columnReference:
-          columnCounter: 317999b4-620d-4654-bab5-4013a2c3345d
-          stepCounter: 75f25b73-5bde-4692-ba2e-29b97ba74ca8
+          columnCounter: fb401b0b-e457-4772-82c9-28f43faf49f7
+          stepCounter: 34112971-501e-4af1-993b-e024abb61d35
         config: {}
         dataType: NUMBER(19,0)
         description: ""
@@ -89,8 +89,8 @@ operation:
             transform: ""
       - appliedColumnTests: {}
         columnReference:
-          columnCounter: 5e97124b-313f-4c77-82f2-8cc7f6e383c3
-          stepCounter: 75f25b73-5bde-4692-ba2e-29b97ba74ca8
+          columnCounter: ee7c75aa-82b1-4c02-a438-875474ed395c
+          stepCounter: 34112971-501e-4af1-993b-e024abb61d35
         config: {}
         dataType: VARCHAR(16777216)
         description: ""
@@ -103,8 +103,8 @@ operation:
             transform: ""
       - appliedColumnTests: {}
         columnReference:
-          columnCounter: 06c661ab-55bb-4a2f-87b1-2dedfa5b7469
-          stepCounter: 75f25b73-5bde-4692-ba2e-29b97ba74ca8
+          columnCounter: 6c1e61f0-0b6d-4be6-bf11-a5a5d2e619f2
+          stepCounter: 34112971-501e-4af1-993b-e024abb61d35
         config: {}
         dataType: VARCHAR(16777216)
         description: ""
@@ -115,26 +115,8 @@ operation:
               - columnCounter: 43cfad2e-2ef4-4b9e-ae21-fcd42e16d5aa
                 stepCounter: fa3afca1-427e-42f4-a0cf-a3197820ad81
             transform: ""
-      - appliedColumnTests: {}
-        columnReference:
-          columnCounter: d766492e-df09-4855-9ee7-9baf5e568d6d
-          stepCounter: 75f25b73-5bde-4692-ba2e-29b97ba74ca8
-        config: {}
-        dataType: VARCHAR
-        defaultValue: ""
-        description: ""
-        name: SYS_IDS
-        nullable: true
-        sourceColumnReferences:
-          - columnReferences:
-              - columnCounter: "0"
-                stepCounter: "0"
-            transform: ""
     cteString: ""
-    description: ""
-    destinationName: ""
     enabledColumnTestIDs: []
-    materializationOption: ""
     sourceMapping:
       - aliases: {}
         customSQL:

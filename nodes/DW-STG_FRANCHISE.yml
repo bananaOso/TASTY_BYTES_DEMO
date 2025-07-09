@@ -1,5 +1,5 @@
 fileVersion: 1
-id: 3f13acf7-e101-46b1-ba98-de4cfa1964fa
+id: e97d3883-2f0a-40a7-85a3-85c2a22ec9b7
 name: STG_FRANCHISE
 operation:
   config:
@@ -19,8 +19,8 @@ operation:
     columns:
       - appliedColumnTests: {}
         columnReference:
-          columnCounter: 176bcbc1-0bf0-486e-b386-3eac6dfa6287
-          stepCounter: 3f13acf7-e101-46b1-ba98-de4cfa1964fa
+          columnCounter: e5a803b2-7ebe-4e2d-b5bf-5efd8b2b051a
+          stepCounter: e97d3883-2f0a-40a7-85a3-85c2a22ec9b7
         config: {}
         dataType: NUMBER(38,0)
         description: ""
@@ -33,8 +33,8 @@ operation:
             transform: ""
       - appliedColumnTests: {}
         columnReference:
-          columnCounter: aeca3d1b-d212-4a33-8ac6-be710df19c8b
-          stepCounter: 3f13acf7-e101-46b1-ba98-de4cfa1964fa
+          columnCounter: efea6483-ae11-4912-b2f8-8e400a698949
+          stepCounter: e97d3883-2f0a-40a7-85a3-85c2a22ec9b7
         config: {}
         dataType: VARCHAR(16777216)
         description: ""
@@ -47,8 +47,8 @@ operation:
             transform: ""
       - appliedColumnTests: {}
         columnReference:
-          columnCounter: 5aad53f9-51db-46a3-b735-66323d4057a0
-          stepCounter: 3f13acf7-e101-46b1-ba98-de4cfa1964fa
+          columnCounter: aaf68237-c677-4b7e-b31b-029b8318c5af
+          stepCounter: e97d3883-2f0a-40a7-85a3-85c2a22ec9b7
         config: {}
         dataType: VARCHAR(16777216)
         description: ""
@@ -61,8 +61,8 @@ operation:
             transform: ""
       - appliedColumnTests: {}
         columnReference:
-          columnCounter: ef6ae14b-42dc-433d-bd45-a0263d597527
-          stepCounter: 3f13acf7-e101-46b1-ba98-de4cfa1964fa
+          columnCounter: fdc995e7-12d4-43fe-b89a-6fe5a7e97cc7
+          stepCounter: e97d3883-2f0a-40a7-85a3-85c2a22ec9b7
         config: {}
         dataType: VARCHAR(16777216)
         description: ""
@@ -75,8 +75,8 @@ operation:
             transform: ""
       - appliedColumnTests: {}
         columnReference:
-          columnCounter: 1a5b83d7-6761-4023-8644-8b088996800c
-          stepCounter: 3f13acf7-e101-46b1-ba98-de4cfa1964fa
+          columnCounter: f0fb4848-69ba-42ab-9a78-f6dcab9a790d
+          stepCounter: e97d3883-2f0a-40a7-85a3-85c2a22ec9b7
         config: {}
         dataType: VARCHAR(16777216)
         description: ""
@@ -89,8 +89,8 @@ operation:
             transform: ""
       - appliedColumnTests: {}
         columnReference:
-          columnCounter: da7bab08-bd0f-425c-817d-2b757666a429
-          stepCounter: 3f13acf7-e101-46b1-ba98-de4cfa1964fa
+          columnCounter: f28e0545-ccdb-444a-94e4-df405ba37186
+          stepCounter: e97d3883-2f0a-40a7-85a3-85c2a22ec9b7
         config: {}
         dataType: VARCHAR(16777216)
         description: ""
@@ -103,8 +103,8 @@ operation:
             transform: ""
       - appliedColumnTests: {}
         columnReference:
-          columnCounter: 7322b935-09ce-412c-a1af-4c844e1d58ae
-          stepCounter: 3f13acf7-e101-46b1-ba98-de4cfa1964fa
+          columnCounter: bcc75ef2-f080-464d-a939-b93bb2615b0a
+          stepCounter: e97d3883-2f0a-40a7-85a3-85c2a22ec9b7
         config: {}
         dataType: VARCHAR(16777216)
         description: ""
@@ -115,26 +115,8 @@ operation:
               - columnCounter: fd24efb7-fc06-47cf-9100-0213e9a314bb
                 stepCounter: 61ee79aa-9a70-4987-baa8-4efba74367fa
             transform: ""
-      - appliedColumnTests: {}
-        columnReference:
-          columnCounter: e40e4c6e-2107-4594-a204-f968dcdb159f
-          stepCounter: 3f13acf7-e101-46b1-ba98-de4cfa1964fa
-        config: {}
-        dataType: VARCHAR
-        defaultValue: ""
-        description: ""
-        name: SYS_IDS
-        nullable: true
-        sourceColumnReferences:
-          - columnReferences:
-              - columnCounter: "0"
-                stepCounter: "0"
-            transform: ""
     cteString: ""
-    description: ""
-    destinationName: ""
     enabledColumnTestIDs: []
-    materializationOption: ""
     sourceMapping:
       - aliases: {}
         customSQL:

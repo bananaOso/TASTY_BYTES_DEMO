@@ -21,24 +21,16 @@
 CREATE OR REPLACE PROCEDURE {{ ref_no_link(node.location.name, 'PROC_' + node.name | upper) | trim }}()
   returns string not null
   language python
-  runtime_version = '3.8'
+  runtime_version = '3.9'
   packages = ('snowflake-snowpark-python', 'pandas') 
   handler = 'stage_py'
 as
 $$
-{{ config.pyLib }}
+{{config.pyLib}}
 
 def stage_py(snowpark_session):
-  df_raw = snowpark_session.sql('''SELECT 
-  {%- for col in source.columns %}
-    {{ get_source_transform(col) }} AS "{{ col.name }}"
-    {%- if not loop.last -%}, {% endif %}
-  {%- endfor %} {{ source.join }} '''.rstrip())
+{{config.dfcmd}}
 
-{%- set dfca = config.dfcmd.split('\n') %}
-{%- for dfc in dfca %}
-  {{ dfc.lstrip() }}
-{%- endfor %}
-  df_final.write.mode("{{config.writeMode}}").save_as_table('{{this}}')
-  return str(df_raw.count()) + " rows input - " +  str(df_final.count()) + " rows output"
+    df_final.write.mode("{{config.writeMode}}").save_as_table('{{this}}')
+    return "done"
 $$

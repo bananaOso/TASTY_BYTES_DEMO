@@ -41,11 +41,7 @@ metadata:
         type: textBox 
         syntax: sql
         isRequired: true    
-        default: " \n
-    df_filtered = df_raw.filter(\"C_ACCTBAL > 5000\")\n
-    df_distinct = df_filtered.distinct()\n
-    df_final = df_distinct.na.drop(subset=\"C_PHONE\")\n
-    "
+        default: ""
 
       - displayName: "https://docs.snowflake.com/en/developer-guide/snowpark/reference/python/latest/dataframe"
         attributeName: Info

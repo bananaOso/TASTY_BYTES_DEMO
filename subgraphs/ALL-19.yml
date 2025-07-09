@@ -2,19 +2,12 @@ fileVersion: 1
 id: "19"
 name: ALL
 steps:
-  - 16ae4a4a-455b-4e8c-933a-ffc7a75c781e
-  - 3f13acf7-e101-46b1-ba98-de4cfa1964fa
   - 4db780f4-ab51-4f08-b7c2-3faba8105813
   - 61ee79aa-9a70-4987-baa8-4efba74367fa
   - 63b21a53-29f6-44fe-b3d6-d35f1f0c1117
-  - 6a0eb8aa-42b9-41b3-acf2-cd8c3bffb819
   - 6c8d6db5-c4de-443a-90f2-0ac56b249896
-  - 703f291a-13c8-4346-a2d9-18c294121618
   - 72cbb28a-faa2-4828-ab70-97b70f44b989
-  - 75f25b73-5bde-4692-ba2e-29b97ba74ca8
-  - bc5a78ec-f129-4bdd-ae3b-f5eab4886a7c
   - d744f637-117e-4f66-9737-bb022ac06732
   - e76eee0e-8b78-46d0-9746-acbcf020f58c
-  - ea1024ad-79fb-40f2-9103-9f158284a06d
   - fa3afca1-427e-42f4-a0cf-a3197820ad81
 type: Subgraph

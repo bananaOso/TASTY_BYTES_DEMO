@@ -1,0 +1,173 @@
+fileVersion: 1
+id: 1f847edb-e0aa-4178-bdad-bedcf9e8d9d9
+name: CUSTOMER_LOYALTY_METRICS
+operation:
+  config:
+    insertStrategy: INSERT
+    postSQL: ""
+    preSQL: ""
+    testsEnabled: true
+    truncateBefore: true
+  database: ""
+  deployEnabled: true
+  description: ""
+  isMultisource: false
+  locationName: DW
+  materializationType: table
+  metadata:
+    appliedNodeTests: []
+    columns:
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: f1582d77-7fa3-4479-8fa0-c520eaff12b0
+          stepCounter: 1f847edb-e0aa-4178-bdad-bedcf9e8d9d9
+        config: {}
+        dataType: NUMBER(38,0)
+        description: ""
+        name: CUSTOMER_ID
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: 8398f3ba-3682-4255-a068-8baf524e5327
+                stepCounter: 8280a519-0b4f-4c86-a80f-195d95f9b370
+            transform: ""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: 93c6cb92-cd31-4a9b-8333-26b24525d980
+          stepCounter: 1f847edb-e0aa-4178-bdad-bedcf9e8d9d9
+        config: {}
+        dataType: VARCHAR(16777216)
+        description: ""
+        name: CITY
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: aeaba5c1-e47c-454b-8281-6db8648c6d58
+                stepCounter: 8280a519-0b4f-4c86-a80f-195d95f9b370
+            transform: ""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: cf801cdc-9c73-4660-be31-49beb70f95b2
+          stepCounter: 1f847edb-e0aa-4178-bdad-bedcf9e8d9d9
+        config: {}
+        dataType: VARCHAR(16777216)
+        description: ""
+        name: COUNTRY
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: e48baaee-59cd-4e7a-bd3d-d37a4605fd26
+                stepCounter: 8280a519-0b4f-4c86-a80f-195d95f9b370
+            transform: ""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: d2aee694-3503-4f65-a759-8802607b3555
+          stepCounter: 1f847edb-e0aa-4178-bdad-bedcf9e8d9d9
+        config: {}
+        dataType: VARCHAR(16777216)
+        description: ""
+        name: FIRST_NAME
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: 23cc95bc-4a2f-4173-9161-8027ff107c08
+                stepCounter: 8280a519-0b4f-4c86-a80f-195d95f9b370
+            transform: ""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: 9ed3c0e6-4996-4762-aa64-6aae975a794b
+          stepCounter: 1f847edb-e0aa-4178-bdad-bedcf9e8d9d9
+        config: {}
+        dataType: VARCHAR(16777216)
+        description: ""
+        name: LAST_NAME
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: 2b29efdb-c184-43e1-bcf1-5fe2c4f76988
+                stepCounter: 8280a519-0b4f-4c86-a80f-195d95f9b370
+            transform: ""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: fb26846e-4e86-413d-8257-be497a6f3a6e
+          stepCounter: 1f847edb-e0aa-4178-bdad-bedcf9e8d9d9
+        config: {}
+        dataType: VARCHAR(16777216)
+        description: ""
+        name: PHONE_NUMBER
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: cc61a1f4-1cb5-4211-83ba-88f9ef85d10a
+                stepCounter: 8280a519-0b4f-4c86-a80f-195d95f9b370
+            transform: ""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: fd5484e9-1491-41de-a4b9-c3a2263912ac
+          stepCounter: 1f847edb-e0aa-4178-bdad-bedcf9e8d9d9
+        config: {}
+        dataType: VARCHAR(16777216)
+        description: ""
+        name: E_MAIL
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: 68cd4adf-8322-409f-a086-0fa7380fbb10
+                stepCounter: 8280a519-0b4f-4c86-a80f-195d95f9b370
+            transform: ""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: cadfe036-117b-4521-8132-1631b14b6cbf
+          stepCounter: 1f847edb-e0aa-4178-bdad-bedcf9e8d9d9
+        config: {}
+        dataType: NUMBER(38,4)
+        description: ""
+        name: TOTAL_SALES
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: 9887710f-245d-4eeb-bfe4-ca40316632a7
+                stepCounter: 4071cc29-b81a-428b-b93f-f43085e673e2
+            transform: SUM("STG_ORDER_HEADER"."ORDER_TOTAL")
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: 1f6f9953-accf-4003-9694-bb978e31ae85
+          stepCounter: 1f847edb-e0aa-4178-bdad-bedcf9e8d9d9
+        config: {}
+        dataType: ARRAY
+        description: ""
+        name: VISITED_LOCATION_IDS_ARRAY
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: fa71390c-3780-48a2-beb5-43293f027ad3
+                stepCounter: 4071cc29-b81a-428b-b93f-f43085e673e2
+            transform: ARRAY_AGG(DISTINCT "STG_ORDER_HEADER"."LOCATION_ID")
+    cteString: ""
+    enabledColumnTestIDs: []
+    sourceMapping:
+      - aliases:
+          STG_CUSTOMER_LOYALTY: 8280a519-0b4f-4c86-a80f-195d95f9b370
+          STG_ORDER_HEADER: 4071cc29-b81a-428b-b93f-f43085e673e2
+        customSQL:
+          customSQL: ""
+        dependencies:
+          - locationName: DW
+            nodeName: STG_CUSTOMER_LOYALTY
+          - locationName: DW
+            nodeName: STG_ORDER_HEADER
+        join:
+          joinCondition: |-
+            FROM {{ ref('DW', 'STG_CUSTOMER_LOYALTY') }} "STG_CUSTOMER_LOYALTY"
+            INNER JOIN {{ ref('DW', 'STG_ORDER_HEADER') }} "STG_ORDER_HEADER"
+            ON "STG_CUSTOMER_LOYALTY"."CUSTOMER_ID" = "STG_ORDER_HEADER"."CUSTOMER_ID"
+            GROUP BY "STG_CUSTOMER_LOYALTY"."CUSTOMER_ID", "STG_CUSTOMER_LOYALTY"."CITY", "STG_CUSTOMER_LOYALTY"."COUNTRY","STG_CUSTOMER_LOYALTY"."FIRST_NAME", "STG_CUSTOMER_LOYALTY"."LAST_NAME", "STG_CUSTOMER_LOYALTY"."PHONE_NUMBER", "STG_CUSTOMER_LOYALTY"."E_MAIL"
+        name: CUSTOMER_LOYALTY_METRICS
+        noLinkRefs: []
+  name: CUSTOMER_LOYALTY_METRICS
+  overrideSQL: false
+  schema: ""
+  sqlType: Stage
+  type: sql
+  version: 1
+type: Node
