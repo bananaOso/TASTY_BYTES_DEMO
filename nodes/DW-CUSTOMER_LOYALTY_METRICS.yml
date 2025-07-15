@@ -117,20 +117,6 @@ operation:
             transform: ""
       - appliedColumnTests: {}
         columnReference:
-          columnCounter: cadfe036-117b-4521-8132-1631b14b6cbf
-          stepCounter: 1f847edb-e0aa-4178-bdad-bedcf9e8d9d9
-        config: {}
-        dataType: NUMBER(38,4)
-        description: ""
-        name: TOTAL_SALES
-        nullable: true
-        sourceColumnReferences:
-          - columnReferences:
-              - columnCounter: 9887710f-245d-4eeb-bfe4-ca40316632a7
-                stepCounter: 4071cc29-b81a-428b-b93f-f43085e673e2
-            transform: SUM("STG_ORDER_HEADER"."ORDER_TOTAL")
-      - appliedColumnTests: {}
-        columnReference:
           columnCounter: 1f6f9953-accf-4003-9694-bb978e31ae85
           stepCounter: 1f847edb-e0aa-4178-bdad-bedcf9e8d9d9
         config: {}
