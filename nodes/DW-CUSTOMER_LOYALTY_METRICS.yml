@@ -28,8 +28,8 @@ operation:
         nullable: true
         sourceColumnReferences:
           - columnReferences:
-              - columnCounter: 8398f3ba-3682-4255-a068-8baf524e5327
-                stepCounter: 8280a519-0b4f-4c86-a80f-195d95f9b370
+              - columnCounter: dc8fd0f4-7184-49cb-93e9-32dd9bdc808d
+                stepCounter: 175e9114-fc87-4023-a2bd-e5eb574743b8
             transform: ""
       - appliedColumnTests: {}
         columnReference:
@@ -42,8 +42,8 @@ operation:
         nullable: true
         sourceColumnReferences:
           - columnReferences:
-              - columnCounter: aeaba5c1-e47c-454b-8281-6db8648c6d58
-                stepCounter: 8280a519-0b4f-4c86-a80f-195d95f9b370
+              - columnCounter: 211a2abd-f09f-48f4-9904-a0c0e7084afb
+                stepCounter: 175e9114-fc87-4023-a2bd-e5eb574743b8
             transform: ""
       - appliedColumnTests: {}
         columnReference:
@@ -56,8 +56,8 @@ operation:
         nullable: true
         sourceColumnReferences:
           - columnReferences:
-              - columnCounter: e48baaee-59cd-4e7a-bd3d-d37a4605fd26
-                stepCounter: 8280a519-0b4f-4c86-a80f-195d95f9b370
+              - columnCounter: e6923684-ae8d-4065-bd6b-dcba802cb98d
+                stepCounter: 175e9114-fc87-4023-a2bd-e5eb574743b8
             transform: ""
       - appliedColumnTests: {}
         columnReference:
@@ -70,8 +70,8 @@ operation:
         nullable: true
         sourceColumnReferences:
           - columnReferences:
-              - columnCounter: 23cc95bc-4a2f-4173-9161-8027ff107c08
-                stepCounter: 8280a519-0b4f-4c86-a80f-195d95f9b370
+              - columnCounter: 3b260e0f-291a-448d-a6d8-7bfdbcdbe005
+                stepCounter: 175e9114-fc87-4023-a2bd-e5eb574743b8
             transform: ""
       - appliedColumnTests: {}
         columnReference:
@@ -84,8 +84,8 @@ operation:
         nullable: true
         sourceColumnReferences:
           - columnReferences:
-              - columnCounter: 2b29efdb-c184-43e1-bcf1-5fe2c4f76988
-                stepCounter: 8280a519-0b4f-4c86-a80f-195d95f9b370
+              - columnCounter: aa083af8-27e8-4711-8c82-9b6cf706e7ba
+                stepCounter: 175e9114-fc87-4023-a2bd-e5eb574743b8
             transform: ""
       - appliedColumnTests: {}
         columnReference:
@@ -98,8 +98,8 @@ operation:
         nullable: true
         sourceColumnReferences:
           - columnReferences:
-              - columnCounter: cc61a1f4-1cb5-4211-83ba-88f9ef85d10a
-                stepCounter: 8280a519-0b4f-4c86-a80f-195d95f9b370
+              - columnCounter: 602841cd-587e-47d6-966c-4076614d6a25
+                stepCounter: 175e9114-fc87-4023-a2bd-e5eb574743b8
             transform: ""
       - appliedColumnTests: {}
         columnReference:
@@ -112,8 +112,8 @@ operation:
         nullable: true
         sourceColumnReferences:
           - columnReferences:
-              - columnCounter: 68cd4adf-8322-409f-a086-0fa7380fbb10
-                stepCounter: 8280a519-0b4f-4c86-a80f-195d95f9b370
+              - columnCounter: 81383c97-34c1-4144-8fbf-8c44dbb95a37
+                stepCounter: 175e9114-fc87-4023-a2bd-e5eb574743b8
             transform: ""
       - appliedColumnTests: {}
         columnReference:
@@ -147,21 +147,21 @@ operation:
     enabledColumnTestIDs: []
     sourceMapping:
       - aliases:
-          STG_CUSTOMER_LOYALTY: 8280a519-0b4f-4c86-a80f-195d95f9b370
+          DIM_CUSTOMER: 175e9114-fc87-4023-a2bd-e5eb574743b8
           STG_ORDER_HEADER: 4071cc29-b81a-428b-b93f-f43085e673e2
         customSQL:
           customSQL: ""
         dependencies:
           - locationName: DW
-            nodeName: STG_CUSTOMER_LOYALTY
+            nodeName: DIM_CUSTOMER
           - locationName: DW
             nodeName: STG_ORDER_HEADER
         join:
           joinCondition: |-
-            FROM {{ ref('DW', 'STG_CUSTOMER_LOYALTY') }} "STG_CUSTOMER_LOYALTY"
+            FROM {{ ref('DW', 'DIM_CUSTOMER') }} "DIM_CUSTOMER"
             INNER JOIN {{ ref('DW', 'STG_ORDER_HEADER') }} "STG_ORDER_HEADER"
-            ON "STG_CUSTOMER_LOYALTY"."CUSTOMER_ID" = "STG_ORDER_HEADER"."CUSTOMER_ID"
-            GROUP BY "STG_CUSTOMER_LOYALTY"."CUSTOMER_ID", "STG_CUSTOMER_LOYALTY"."CITY", "STG_CUSTOMER_LOYALTY"."COUNTRY","STG_CUSTOMER_LOYALTY"."FIRST_NAME", "STG_CUSTOMER_LOYALTY"."LAST_NAME", "STG_CUSTOMER_LOYALTY"."PHONE_NUMBER", "STG_CUSTOMER_LOYALTY"."E_MAIL"
+            ON "DIM_CUSTOMER"."CUSTOMER_ID" = "STG_ORDER_HEADER"."CUSTOMER_ID"
+            GROUP BY "DIM_CUSTOMER"."CUSTOMER_ID", "DIM_CUSTOMER"."CITY", "DIM_CUSTOMER"."COUNTRY","DIM_CUSTOMER"."FIRST_NAME", "DIM_CUSTOMER"."LAST_NAME", "DIM_CUSTOMER"."PHONE_NUMBER", "DIM_CUSTOMER"."E_MAIL"
         name: CUSTOMER_LOYALTY_METRICS
         noLinkRefs: []
   name: CUSTOMER_LOYALTY_METRICS

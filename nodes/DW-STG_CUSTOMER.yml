@@ -1,6 +1,6 @@
 fileVersion: 1
 id: 8280a519-0b4f-4c86-a80f-195d95f9b370
-name: STG_CUSTOMER_LOYALTY
+name: STG_CUSTOMER
 operation:
   config:
     insertStrategy: INSERT
@@ -238,9 +238,9 @@ operation:
             nodeName: CUSTOMER_LOYALTY
         join:
           joinCondition: FROM {{ ref('RAW_CUSTOMER', 'CUSTOMER_LOYALTY') }} "CUSTOMER_LOYALTY"
-        name: STG_CUSTOMER_LOYALTY
+        name: STG_CUSTOMER
         noLinkRefs: []
-  name: STG_CUSTOMER_LOYALTY
+  name: STG_CUSTOMER
   overrideSQL: false
   schema: ""
   sqlType: Stage
