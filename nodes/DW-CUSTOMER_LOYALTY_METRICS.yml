@@ -129,6 +129,20 @@ operation:
               - columnCounter: fa71390c-3780-48a2-beb5-43293f027ad3
                 stepCounter: 4071cc29-b81a-428b-b93f-f43085e673e2
             transform: ARRAY_AGG(DISTINCT "STG_ORDER_HEADER"."LOCATION_ID")
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: 12cba220-613e-47e2-8216-01321441ef64
+          stepCounter: 1f847edb-e0aa-4178-bdad-bedcf9e8d9d9
+        config: {}
+        dataType: NUMBER(38,4)
+        description: ""
+        name: TOTAL_SALES
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: 9887710f-245d-4eeb-bfe4-ca40316632a7
+                stepCounter: 4071cc29-b81a-428b-b93f-f43085e673e2
+            transform: SUM("STG_ORDER_HEADER"."ORDER_TOTAL")
     cteString: ""
     enabledColumnTestIDs: []
     sourceMapping:
