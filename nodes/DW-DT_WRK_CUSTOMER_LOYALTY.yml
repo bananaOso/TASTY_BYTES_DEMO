@@ -192,7 +192,7 @@ operation:
           columnCounter: c77e4ae3-0df5-4eba-93a3-2ade890da7ca
           stepCounter: e0f0332b-f4dd-4b79-8c57-8c68097724d5
         config: {}
-        dataType: DATE
+        dataType: timestamp
         description: ""
         name: SIGN_UP_DATE
         nullable: true
@@ -200,7 +200,7 @@ operation:
           - columnReferences:
               - columnCounter: efa12d02-1d31-4e8e-a432-191fd780743c
                 stepCounter: 51771e87-2a16-4dbd-b6c7-e6dd0975442a
-            transform: ""
+            transform: TO_TIMESTAMP("CUSTOMER_LOYALTY"."SIGN_UP_DATE")
       - appliedColumnTests: {}
         columnReference:
           columnCounter: 1f5c8174-e571-4d1d-b758-a3b58486f21f

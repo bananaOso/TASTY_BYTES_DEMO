@@ -19,10 +19,11 @@ operation:
     insertStrategy: UNION ALL
     lagSpecification:
       items:
-        - {}
+        - lagPeriod: Minutes
+          lagValue: 60
     refresh_mode: AUTO
     selectDistinct: false
-    warehouseName: dev_wh_xs
+    warehouseName: COMPUTE_WH
   database: ""
   deployEnabled: true
   description: ""
@@ -135,7 +136,7 @@ operation:
           columnCounter: de57edb7-d757-4842-bd6c-e63af5020bbb
           stepCounter: 0a75f3c8-69e3-438a-9a21-3a2d1685550b
         config: {}
-        dataType: FLOAT
+        dataType: ARRAY
         description: ""
         name: LOCATION_ID
         nullable: true
@@ -162,8 +163,8 @@ operation:
     enabledColumnTestIDs: []
     sourceMapping:
       - aliases:
-          DT_DIM_CUSTOMER_LOYALTY: a04cc6e5-fe01-4320-b0b9-32ee420de642
-          STG_ORDER_HEADER: 8d3b6fde-6346-4525-bdbb-94228ae00966
+          DT_DIM_CUSTOMER: a04cc6e5-fe01-4320-b0b9-32ee420de642
+          DT_WRK_ORDER_HEADER: 8d3b6fde-6346-4525-bdbb-94228ae00966
         customSQL:
           customSQL: ""
         dependencies:
@@ -173,10 +174,10 @@ operation:
             nodeName: DT_WRK_ORDER_HEADER
         join:
           joinCondition: |-
-            FROM {{ ref('DW', 'DT_DIM_CUSTOMER') }} "DT_DIM_CUSTOMER_LOYALTY"
-            INNER JOIN {{ ref('DW', 'DT_WRK_ORDER_HEADER') }} "STG_ORDER_HEADER"
-            ON "DIM_CUSTOMER"."CUSTOMER_ID" = "STG_ORDER_HEADER"."CUSTOMER_ID"
-            GROUP BY "DIM_CUSTOMER"."CUSTOMER_ID", "DIM_CUSTOMER"."CITY", "DIM_CUSTOMER"."COUNTRY","DIM_CUSTOMER"."FIRST_NAME", "DIM_CUSTOMER"."LAST_NAME", "DIM_CUSTOMER"."PHONE_NUMBER", "DIM_CUSTOMER"."E_MAIL"
+            FROM {{ ref('DW', 'DT_DIM_CUSTOMER') }} "DT_DIM_CUSTOMER"
+            INNER JOIN {{ ref('DW', 'DT_WRK_ORDER_HEADER') }} "DT_WRK_ORDER_HEADER"
+            ON "DT_DIM_CUSTOMER"."CUSTOMER_ID" = "DT_WRK_ORDER_HEADER"."CUSTOMER_ID"
+            GROUP BY "DT_DIM_CUSTOMER"."CUSTOMER_ID", "DT_DIM_CUSTOMER"."CITY", "DT_DIM_CUSTOMER"."COUNTRY","DT_DIM_CUSTOMER"."FIRST_NAME", "DT_DIM_CUSTOMER"."LAST_NAME", "DT_DIM_CUSTOMER"."PHONE_NUMBER", "DT_DIM_CUSTOMER"."E_MAIL"
         name: DT_CUSTOMER_LOYALTY_METRICS
         noLinkRefs: []
   name: DT_CUSTOMER_LOYALTY_METRICS

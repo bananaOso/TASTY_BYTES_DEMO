@@ -12,7 +12,7 @@ operation:
       items:
         - {}
     clusterKeyExpressions: false
-    downstreamOption: false
+    downstreamOption: true
     externalVolume: ""
     initialize: ON_CREATE
     lagSpecification:
@@ -220,7 +220,7 @@ operation:
           columnCounter: 4d733ecb-8b4f-46e6-ae41-c8829eb50463
           stepCounter: a04cc6e5-fe01-4320-b0b9-32ee420de642
         config: {}
-        dataType: DATE
+        dataType: TIMESTAMP
         description: ""
         name: SIGN_UP_DATE
         nullable: true
