@@ -1,20 +1,73 @@
 fileVersion: 1
-id: 61ee79aa-9a70-4987-baa8-4efba74367fa
+id: 3eac6bfb-9950-4b62-b849-2ea6db275316
 name: FRANCHISE
 operation:
+  config:
+    binformat: HEX
+    bytemark: true
+    columnmismatch: false
+    compression: ""
+    dateformat: ""
+    emptyfield: true
+    encoding: UTF8
+    enforceLength: ""
+    errornumber: ""
+    escapeenclosed: \134
+    escapeval: ""
+    externalURI: Enter external URI-Ex:s3://snowflake-docs
+    extlocation: false
+    fieldDelim: ","
+    fieldEnclosed: \042
+    fileFormatLoc: STAGE
+    fileFormatName: CSV_FF
+    fileFormatType: File Format Name
+    fileNames: ""
+    filePattern: ""
+    fileType: CSV
+    forceLoad: ""
+    inferschema: false
+    intextstage: true
+    loadUncertainFiles: ""
+    mulline: true
+    nullchar: ('\N')
+    onError: ""
+    parsehdr: true
+    parsehdr1: true
+    purgeBehavior: ""
+    recDelim: |+
+
+    replaceinvalidcharacters: true
+    returnFailedOnly: ""
+    sizeLimit: ""
+    skipBlankLines: false
+    skipHeader: "1"
+    stageName: s3load
+    stageStorageLocationName: STAGE
+    storageintegration: ""
+    stripouterarray: true
+    subfolder: raw_pos/country
+    timeformat: ""
+    timestampformat: ""
+    trimSpace: false
+    truncateBefore: false
+    truncateColumns: ""
+    usevectscan: false
   database: ""
   deployEnabled: true
   description: ""
+  isMultisource: false
   locationName: RAW_POS
+  materializationType: table
   metadata:
+    appliedNodeTests: []
     columns:
       - acceptedValues:
           strictMatch: true
           values: []
         appliedColumnTests: {}
         columnReference:
-          columnCounter: f3626689-9980-49b9-adc1-33ac38eabf7e
-          stepCounter: 61ee79aa-9a70-4987-baa8-4efba74367fa
+          columnCounter: 5a8fe8fe-7906-4ed9-90cc-4494f7e3120c
+          stepCounter: 3eac6bfb-9950-4b62-b849-2ea6db275316
         config: {}
         dataType: NUMBER(38,0)
         defaultValue: ""
@@ -32,8 +85,8 @@ operation:
           values: []
         appliedColumnTests: {}
         columnReference:
-          columnCounter: 667fdd73-8a83-449f-b5ef-62337a9d9f6c
-          stepCounter: 61ee79aa-9a70-4987-baa8-4efba74367fa
+          columnCounter: 218401e7-de02-493a-a8b9-376d3b8e67d0
+          stepCounter: 3eac6bfb-9950-4b62-b849-2ea6db275316
         config: {}
         dataType: VARCHAR(16777216)
         defaultValue: ""
@@ -51,8 +104,8 @@ operation:
           values: []
         appliedColumnTests: {}
         columnReference:
-          columnCounter: 6e9f3749-db44-4170-8a0b-e7eba5668c78
-          stepCounter: 61ee79aa-9a70-4987-baa8-4efba74367fa
+          columnCounter: 14cf5664-c44a-4a35-868a-484fa93019ba
+          stepCounter: 3eac6bfb-9950-4b62-b849-2ea6db275316
         config: {}
         dataType: VARCHAR(16777216)
         defaultValue: ""
@@ -70,8 +123,8 @@ operation:
           values: []
         appliedColumnTests: {}
         columnReference:
-          columnCounter: 3e36b59f-bb57-4363-83d3-3bee6b9c51e1
-          stepCounter: 61ee79aa-9a70-4987-baa8-4efba74367fa
+          columnCounter: 254263ba-f667-4e2b-a7c2-0457968ba394
+          stepCounter: 3eac6bfb-9950-4b62-b849-2ea6db275316
         config: {}
         dataType: VARCHAR(16777216)
         defaultValue: ""
@@ -89,8 +142,8 @@ operation:
           values: []
         appliedColumnTests: {}
         columnReference:
-          columnCounter: daf732c2-865f-41be-a664-46e9e074e0db
-          stepCounter: 61ee79aa-9a70-4987-baa8-4efba74367fa
+          columnCounter: f3f17388-20cb-4653-83fe-4411907c5ff4
+          stepCounter: 3eac6bfb-9950-4b62-b849-2ea6db275316
         config: {}
         dataType: VARCHAR(16777216)
         defaultValue: ""
@@ -108,8 +161,8 @@ operation:
           values: []
         appliedColumnTests: {}
         columnReference:
-          columnCounter: fc2a39bf-1fde-4afc-9388-d5623838b4b6
-          stepCounter: 61ee79aa-9a70-4987-baa8-4efba74367fa
+          columnCounter: 4ebebf36-5877-41fd-bc2c-704753a0153b
+          stepCounter: 3eac6bfb-9950-4b62-b849-2ea6db275316
         config: {}
         dataType: VARCHAR(16777216)
         defaultValue: ""
@@ -127,8 +180,8 @@ operation:
           values: []
         appliedColumnTests: {}
         columnReference:
-          columnCounter: fd24efb7-fc06-47cf-9100-0213e9a314bb
-          stepCounter: 61ee79aa-9a70-4987-baa8-4efba74367fa
+          columnCounter: b27e1e05-fdf9-469c-bd8a-efcdef355dc1
+          stepCounter: 3eac6bfb-9950-4b62-b849-2ea6db275316
         config: {}
         dataType: VARCHAR(16777216)
         defaultValue: ""
@@ -141,9 +194,123 @@ operation:
             transform: ""
         transform: ""
         uniqueKey: false
+      - acceptedValues:
+          strictMatch: true
+          values: []
+        appliedColumnTests: {}
+        columnReference:
+          columnCounter: 10996a48-3207-4366-9f88-4fafa3c9eb9a
+          stepCounter: 3eac6bfb-9950-4b62-b849-2ea6db275316
+        config: {}
+        dataType: VARIANT
+        defaultValue: ""
+        description: ""
+        name: SRC
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences: []
+            transform: $1
+        sysJSON: true
+      - acceptedValues:
+          strictMatch: true
+          values: []
+        appliedColumnTests: {}
+        columnReference:
+          columnCounter: d0438b6e-5bf4-4c68-aea2-4143be34750f
+          stepCounter: 3eac6bfb-9950-4b62-b849-2ea6db275316
+        config: {}
+        dataType: TIMESTAMP_NTZ
+        defaultValue: ""
+        description: ""
+        name: LOAD_TIMESTAMP
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences: []
+            transform: current_timestamp()::timestamp_ntz
+        sysLdTs: true
+      - acceptedValues:
+          strictMatch: true
+          values: []
+        appliedColumnTests: {}
+        columnReference:
+          columnCounter: df11b4c5-02d4-4fa9-a149-cf06ab536734
+          stepCounter: 3eac6bfb-9950-4b62-b849-2ea6db275316
+        config: {}
+        dataType: STRING
+        defaultValue: ""
+        description: ""
+        name: FILENAME
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences: []
+            transform: METADATA$FILENAME
+        sysFlNm: true
+      - acceptedValues:
+          strictMatch: true
+          values: []
+        appliedColumnTests: {}
+        columnReference:
+          columnCounter: 6b3fadc6-f955-4f61-95a4-397a1b76ec7e
+          stepCounter: 3eac6bfb-9950-4b62-b849-2ea6db275316
+        config: {}
+        dataType: NUMBER
+        defaultValue: ""
+        description: ""
+        name: FILE_ROW_NUMBER
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences: []
+            transform: METADATA$FILE_ROW_NUMBER
+        sysFlRwNm: true
+      - acceptedValues:
+          strictMatch: true
+          values: []
+        appliedColumnTests: {}
+        columnReference:
+          columnCounter: dfd00184-9840-451b-968a-37ed45f693e5
+          stepCounter: 3eac6bfb-9950-4b62-b849-2ea6db275316
+        config: {}
+        dataType: TIMESTAMP_NTZ
+        defaultValue: ""
+        description: ""
+        name: FILE_LAST_MODIFIED
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences: []
+            transform: METADATA$FILE_LAST_MODIFIED
+        sysFlLtMd: true
+      - acceptedValues:
+          strictMatch: true
+          values: []
+        appliedColumnTests: {}
+        columnReference:
+          columnCounter: c4eb8933-cffe-47a3-ac97-a5c3d37a3465
+          stepCounter: 3eac6bfb-9950-4b62-b849-2ea6db275316
+        config: {}
+        dataType: TIMESTAMP_NTZ
+        defaultValue: ""
+        description: ""
+        name: SCAN_TIME
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences: []
+            transform: METADATA$START_SCAN_TIME
+        sysFlScTm: true
+    cteString: ""
+    enabledColumnTestIDs: []
+    sourceMapping:
+      - aliases: {}
+        customSQL:
+          customSQL: ""
+        dependencies: []
+        join:
+          joinCondition: ""
+        name: FRANCHISE
+        noLinkRefs: []
   name: FRANCHISE
+  overrideSQL: false
   schema: ""
-  sqlType: Source
-  type: sourceInput
+  sqlType: external-data-package-1-3-0:::324
+  type: sql
   version: 1
 type: Node

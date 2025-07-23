@@ -6,7 +6,7 @@ operation:
     dfcmd: |2
           locations_df = snowpark_session.table("CROOD_DEV.TASTY_BYTES_DEMO.STG_LOCATION")
           trucks_df = snowpark_session.table("CROOD_DEV.TASTY_BYTES_DEMO.STG_TRUCK")
-          orders_df = snowpark_session.table("CROOD_DEV.TASTY_BYTES_DEMO.ORDERS")
+          orders_df = snowpark_session.table("CROOD_DEV.TASTY_BYTES_DEMO.FCT_ORDERS")
           # Join locations with trucks to get truck counts by location
           location_trucks = (
               trucks_df
@@ -236,12 +236,14 @@ operation:
     cteString: ""
     enabledColumnTestIDs: []
     sourceMapping:
-      - aliases: {}
+      - aliases:
+          STG_LOCATION: d313c4f8-772c-4557-9278-10255d7bc193
+          STG_TRUCK: 99aa5c30-4863-4ad2-89ed-b5da2154b1fc
         customSQL:
           customSQL: ""
         dependencies:
           - locationName: DW
-            nodeName: ORDERS
+            nodeName: FCT_ORDERS
           - locationName: DW
             nodeName: STG_LOCATION
           - locationName: DW
@@ -251,7 +253,7 @@ operation:
             FROM {{ ref('DW', 'STG_LOCATION') }} "STG_LOCATION"
             INNER JOIN {{ ref('DW', 'STG_TRUCK') }} "STG_TRUCK"
             ON "STG_LOCATION"./*COLUMN*/ = "STG_TRUCK"./*COLUMN*/
-            INNER JOIN {{ ref('DW', 'ORDERS') }} "ORDERS"
+            INNER JOIN {{ ref('DW', 'FCT_ORDERS') }} "ORDERS"
             ON "STG_LOCATION"./*COLUMN*/ = "ORDERS"./*COLUMN*/
         name: SALES_METRICS_BY_LOCATION
         noLinkRefs: []

@@ -6,3 +6,4 @@ locations:
   - RAW_CUSTOMER
   - RAW_POS
   - SNOWPARK_LANDING
+  - STAGE
