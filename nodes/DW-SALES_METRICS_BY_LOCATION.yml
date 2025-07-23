@@ -6,7 +6,7 @@ operation:
     dfcmd: |2
           locations_df = snowpark_session.table("CROOD_DEV.TASTY_BYTES_DEMO.DT_WRK_LOCATION")
           trucks_df = snowpark_session.table("CROOD_DEV.TASTY_BYTES_DEMO.DT_WRK_TRUCK")
-          orders_df = snowpark_session.table("CROOD_DEV.TASTY_BYTES_DEMO.DT_WRK_ORDERS")
+          orders_df = snowpark_session.table("CROOD_DEV.TASTY_BYTES_DEMO.DT_ORDERS")
           # Join locations with trucks to get truck counts by location
           location_trucks = (
               trucks_df

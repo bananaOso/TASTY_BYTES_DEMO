@@ -21,13 +21,20 @@ operation:
           lagValue: 60
     orderBy:
       items:
-        - {}
+        - colName:
+            columnCounter: b655d57b-7e20-4319-b492-782f3ba246eb
+            stepCounter: b127c048-82f2-437a-a837-22ee88667430
     orderByDateTime:
       items:
         - {}
     partitionBy:
       items:
-        - {}
+        - partColName:
+            columnCounter: d4879a6b-35c2-4be2-8b75-5e45ef06a4f5
+            stepCounter: b127c048-82f2-437a-a837-22ee88667430
+        - partColName:
+            columnCounter: 9cd43c2c-7f18-4024-b8a9-bee078525ed1
+            stepCounter: b127c048-82f2-437a-a837-22ee88667430
     recordVersioning: Datetime Column
     refresh_mode: AUTO
     warehouseName: COMPUTE_WH
@@ -592,12 +599,19 @@ operation:
     cteString: ""
     enabledColumnTestIDs: []
     sourceMapping:
-      - aliases: {}
+      - aliases:
+          DT_DIM_CUSTOMER: a04cc6e5-fe01-4320-b0b9-32ee420de642
+          DT_WRK_FRANCHISE: 4c5e618e-dd53-4711-9afe-5ade52c6fe45
+          DT_WRK_LOCATION: 7a51395d-5023-4d87-99d1-9c76a29b00e1
+          DT_WRK_MENU: 1a36e12d-6e97-41e6-9d15-59bcf6b8961b
+          DT_WRK_ORDER_DETAIL: 30c8ef0f-c0f2-462e-825c-eca3652a226d
+          DT_WRK_ORDER_HEADER: 8d3b6fde-6346-4525-bdbb-94228ae00966
+          DT_WRK_TRUCK: e26e44cd-1d99-478c-903d-8ba11987aeda
         customSQL:
           customSQL: ""
         dependencies:
           - locationName: DW
-            nodeName: DT_DIM_CUSTOMER_LOYALTY
+            nodeName: DT_DIM_CUSTOMER
           - locationName: DW
             nodeName: DT_WRK_FRANCHISE
           - locationName: DW
@@ -623,8 +637,8 @@ operation:
                 ON "DT_WRK_TRUCK"."FRANCHISE_ID" = "DT_WRK_FRANCHISE"."FRANCHISE_ID"
             JOIN {{ ref('DW', 'DT_WRK_LOCATION') }} "DT_WRK_LOCATION"
                 ON "DT_WRK_ORDER_HEADER"."LOCATION_ID"= "DT_WRK_LOCATION"."LOCATION_ID"
-            LEFT JOIN {{ ref('DW','DIM_CUSTOMER') }} "DIM_CUSTOMER"
-                ON ""DT_WRK_ORDER_HEADER"."CUSTOMER_ID" = "DIM_CUSTOMER"."CUSTOMER_ID"
+            LEFT JOIN {{ ref('DW', 'DT_DIM_CUSTOMER') }} "DT_DIM_CUSTOMER"
+                ON "DT_WRK_ORDER_HEADER"."CUSTOMER_ID" = "DT_DIM_CUSTOMER"."CUSTOMER_ID"
         name: DT_ORDERS
         noLinkRefs: []
   name: DT_ORDERS
