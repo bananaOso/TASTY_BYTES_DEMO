@@ -612,19 +612,19 @@ operation:
             nodeName: DT_WRK_TRUCK
         join:
           joinCondition: |-
-            FROM {{ ref('DW', 'DT_DIM_CUSTOMER_LOYALTY') }} "DT_DIM_CUSTOMER_LOYALTY"
-            INNER JOIN {{ ref('DW', 'DT_WRK_ORDER_HEADER') }} "DT_WRK_ORDER_HEADER"
-            ON "DT_DIM_CUSTOMER_LOYALTY"./*COLUMN*/ = "DT_WRK_ORDER_HEADER"./*COLUMN*/
-            INNER JOIN {{ ref('DW', 'DT_WRK_ORDER_DETAIL') }} "DT_WRK_ORDER_DETAIL"
-            ON "DT_DIM_CUSTOMER_LOYALTY"./*COLUMN*/ = "DT_WRK_ORDER_DETAIL"./*COLUMN*/
-            INNER JOIN {{ ref('DW', 'DT_WRK_MENU') }} "DT_WRK_MENU"
-            ON "DT_DIM_CUSTOMER_LOYALTY"./*COLUMN*/ = "DT_WRK_MENU"./*COLUMN*/
-            INNER JOIN {{ ref('DW', 'DT_WRK_LOCATION') }} "DT_WRK_LOCATION"
-            ON "DT_DIM_CUSTOMER_LOYALTY"./*COLUMN*/ = "DT_WRK_LOCATION"./*COLUMN*/
-            INNER JOIN {{ ref('DW', 'DT_WRK_TRUCK') }} "DT_WRK_TRUCK"
-            ON "DT_DIM_CUSTOMER_LOYALTY"./*COLUMN*/ = "DT_WRK_TRUCK"./*COLUMN*/
-            INNER JOIN {{ ref('DW', 'DT_WRK_FRANCHISE') }} "DT_WRK_FRANCHISE"
-            ON "DT_DIM_CUSTOMER_LOYALTY"./*COLUMN*/ = "DT_WRK_FRANCHISE"./*COLUMN*/
+            FROM {{ ref('DW', 'DT_WRK_ORDER_DETAIL') }} "DT_WRK_ORDER_DETAIL"
+            JOIN {{ ref('DW', 'DT_WRK_ORDER_HEADER') }} "DT_WRK_ORDER_HEADER"
+                ON "DT_WRK_ORDER_DETAIL"."ORDER_ID" = "DT_WRK_ORDER_HEADER"."ORDER_ID"
+            JOIN {{ ref('DW', 'DT_WRK_TRUCK') }} "DT_WRK_TRUCK"
+                ON "DT_WRK_ORDER_HEADER"."TRUCK_ID" = "DT_WRK_TRUCK"."TRUCK_ID"
+            JOIN {{ ref('DW', 'DT_WRK_MENU') }} "DT_WRK_MENU"
+                ON "DT_WRK_ORDER_DETAIL"."MENU_ITEM_ID" = "DT_WRK_MENU"."MENU_ITEM_ID"
+            JOIN {{ ref('DW', 'DT_WRK_FRANCHISE') }} "DT_WRK_FRANCHISE"
+                ON "DT_WRK_TRUCK"."FRANCHISE_ID" = "DT_WRK_FRANCHISE"."FRANCHISE_ID"
+            JOIN {{ ref('DW', 'DT_WRK_LOCATION') }} "DT_WRK_LOCATION"
+                ON "DT_WRK_ORDER_HEADER"."LOCATION_ID"= "DT_WRK_LOCATION"."LOCATION_ID"
+            LEFT JOIN {{ ref('DW','DIM_CUSTOMER') }} "DIM_CUSTOMER"
+                ON ""DT_WRK_ORDER_HEADER"."CUSTOMER_ID" = "DIM_CUSTOMER"."CUSTOMER_ID"
         name: DT_ORDERS
         noLinkRefs: []
   name: DT_ORDERS
