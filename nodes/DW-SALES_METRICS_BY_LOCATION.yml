@@ -4,9 +4,9 @@ name: SALES_METRICS_BY_LOCATION
 operation:
   config:
     dfcmd: |2
-          locations_df = snowpark_session.table("CROOD_DEV.TASTY_BYTES_DEMO.STG_LOCATION")
-          trucks_df = snowpark_session.table("CROOD_DEV.TASTY_BYTES_DEMO.STG_TRUCK")
-          orders_df = snowpark_session.table("CROOD_DEV.TASTY_BYTES_DEMO.FCT_ORDERS")
+          locations_df = snowpark_session.table("CROOD_DEV.TASTY_BYTES_DEMO.DT_WRK_LOCATION")
+          trucks_df = snowpark_session.table("CROOD_DEV.TASTY_BYTES_DEMO.DT_WRK_TRUCK")
+          orders_df = snowpark_session.table("CROOD_DEV.TASTY_BYTES_DEMO.DT_WRK_ORDERS")
           # Join locations with trucks to get truck counts by location
           location_trucks = (
               trucks_df
@@ -237,23 +237,23 @@ operation:
     enabledColumnTestIDs: []
     sourceMapping:
       - aliases:
-          STG_LOCATION: d313c4f8-772c-4557-9278-10255d7bc193
-          STG_TRUCK: 99aa5c30-4863-4ad2-89ed-b5da2154b1fc
+          STG_LOCATION: 7a51395d-5023-4d87-99d1-9c76a29b00e1
+          STG_TRUCK: e26e44cd-1d99-478c-903d-8ba11987aeda
         customSQL:
           customSQL: ""
         dependencies:
           - locationName: DW
-            nodeName: FCT_ORDERS
+            nodeName: DT_ORDERS
           - locationName: DW
-            nodeName: STG_LOCATION
+            nodeName: DT_WRK_LOCATION
           - locationName: DW
-            nodeName: STG_TRUCK
+            nodeName: DT_WRK_TRUCK
         join:
           joinCondition: |-
-            FROM {{ ref('DW', 'STG_LOCATION') }} "STG_LOCATION"
-            INNER JOIN {{ ref('DW', 'STG_TRUCK') }} "STG_TRUCK"
+            FROM {{ ref('DW', 'DT_WRK_LOCATION') }} "STG_LOCATION"
+            INNER JOIN {{ ref('DW', 'DT_WRK_TRUCK') }} "STG_TRUCK"
             ON "STG_LOCATION"./*COLUMN*/ = "STG_TRUCK"./*COLUMN*/
-            INNER JOIN {{ ref('DW', 'FCT_ORDERS') }} "ORDERS"
+            INNER JOIN {{ ref('DW', 'DT_ORDERS') }} "ORDERS"
             ON "STG_LOCATION"./*COLUMN*/ = "ORDERS"./*COLUMN*/
         name: SALES_METRICS_BY_LOCATION
         noLinkRefs: []

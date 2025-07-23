@@ -1,37 +1,42 @@
 fileVersion: 1
-id: 34112971-501e-4af1-993b-e024abb61d35
-name: STG_COUNTRY
+id: 0374c869-73c8-4207-b6b5-11d1bb23828c
+name: DT_WRK_COUNTRY
 operation:
   config:
+    baseLocation: ""
     clusterKey: false
+    clusterKeyConfig:
+      items:
+        - {}
+    clusterKeyConfigExpressions:
+      items:
+        - {}
+    clusterKeyExpressions: false
     downstreamOption: false
+    externalVolume: ""
     groupByAll: false
     initialize: ON_CREATE
-    insertStrategy: INSERT
+    insertStrategy: UNION ALL
     lagSpecification:
       items:
         - lagPeriod: Minutes
           lagValue: 60
-    postSQL: ""
-    preSQL: ""
-    refresh_mode: INCREMENTAL
+    refresh_mode: AUTO
     selectDistinct: false
-    testsEnabled: true
-    truncateBefore: true
     warehouseName: COMPUTE_WH
   database: ""
   deployEnabled: true
   description: ""
   isMultisource: false
   locationName: DW
-  materializationType: table
+  materializationType: dynamic table
   metadata:
     appliedNodeTests: []
     columns:
       - appliedColumnTests: {}
         columnReference:
-          columnCounter: 4deadf05-9426-4654-b9f8-8cf28124e9d5
-          stepCounter: 34112971-501e-4af1-993b-e024abb61d35
+          columnCounter: 7d5f0240-990b-4a83-852f-0c2117e7ecdc
+          stepCounter: 0374c869-73c8-4207-b6b5-11d1bb23828c
         config: {}
         dataType: NUMBER(18,0)
         description: ""
@@ -44,8 +49,8 @@ operation:
             transform: ""
       - appliedColumnTests: {}
         columnReference:
-          columnCounter: 584bc66d-5de4-4798-84fe-c6a6bbaf3c08
-          stepCounter: 34112971-501e-4af1-993b-e024abb61d35
+          columnCounter: ebb35928-cb31-4c12-9f8b-3509f18dd717
+          stepCounter: 0374c869-73c8-4207-b6b5-11d1bb23828c
         config: {}
         dataType: VARCHAR(16777216)
         description: ""
@@ -58,8 +63,8 @@ operation:
             transform: ""
       - appliedColumnTests: {}
         columnReference:
-          columnCounter: 5ecd0ffa-d444-4703-a822-04f9961a2708
-          stepCounter: 34112971-501e-4af1-993b-e024abb61d35
+          columnCounter: 9b9590a8-2c02-4bfc-82f5-4c4a1cf2baaf
+          stepCounter: 0374c869-73c8-4207-b6b5-11d1bb23828c
         config: {}
         dataType: VARCHAR(3)
         description: ""
@@ -72,8 +77,8 @@ operation:
             transform: ""
       - appliedColumnTests: {}
         columnReference:
-          columnCounter: bea684ce-250c-4bbc-93ba-88bd86348b20
-          stepCounter: 34112971-501e-4af1-993b-e024abb61d35
+          columnCounter: e764da5e-2c54-47fa-b690-7f2155641982
+          stepCounter: 0374c869-73c8-4207-b6b5-11d1bb23828c
         config: {}
         dataType: VARCHAR(2)
         description: ""
@@ -86,8 +91,8 @@ operation:
             transform: ""
       - appliedColumnTests: {}
         columnReference:
-          columnCounter: fb401b0b-e457-4772-82c9-28f43faf49f7
-          stepCounter: 34112971-501e-4af1-993b-e024abb61d35
+          columnCounter: b1ec63f3-9bee-4709-8621-79f046869f93
+          stepCounter: 0374c869-73c8-4207-b6b5-11d1bb23828c
         config: {}
         dataType: NUMBER(19,0)
         description: ""
@@ -100,8 +105,8 @@ operation:
             transform: ""
       - appliedColumnTests: {}
         columnReference:
-          columnCounter: ee7c75aa-82b1-4c02-a438-875474ed395c
-          stepCounter: 34112971-501e-4af1-993b-e024abb61d35
+          columnCounter: 99fa928c-553b-4f41-a365-e36d1be6492b
+          stepCounter: 0374c869-73c8-4207-b6b5-11d1bb23828c
         config: {}
         dataType: VARCHAR(16777216)
         description: ""
@@ -114,8 +119,8 @@ operation:
             transform: ""
       - appliedColumnTests: {}
         columnReference:
-          columnCounter: 6c1e61f0-0b6d-4be6-bf11-a5a5d2e619f2
-          stepCounter: 34112971-501e-4af1-993b-e024abb61d35
+          columnCounter: 48d4b974-56a6-4971-a996-0fd9a67935aa
+          stepCounter: 0374c869-73c8-4207-b6b5-11d1bb23828c
         config: {}
         dataType: VARCHAR(16777216)
         description: ""
@@ -137,12 +142,12 @@ operation:
             nodeName: COUNTRY
         join:
           joinCondition: FROM {{ ref('RAW_POS', 'COUNTRY') }} "COUNTRY"
-        name: STG_COUNTRY
+        name: DT_WRK_COUNTRY
         noLinkRefs: []
-  name: STG_COUNTRY
+  name: DT_WRK_COUNTRY
   overrideSQL: false
   schema: ""
-  sqlType: Stage
+  sqlType: dynamic-tables-1-1-11:::347
   type: sql
   version: 1
 type: Node

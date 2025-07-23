@@ -1,0 +1,188 @@
+fileVersion: 1
+id: 0a75f3c8-69e3-438a-9a21-3a2d1685550b
+name: DT_CUSTOMER_LOYALTY_METRICS
+operation:
+  config:
+    baseLocation: ""
+    clusterKey: false
+    clusterKeyConfig:
+      items:
+        - {}
+    clusterKeyConfigExpressions:
+      items:
+        - {}
+    clusterKeyExpressions: false
+    downstreamOption: false
+    externalVolume: ""
+    groupByAll: false
+    initialize: ON_CREATE
+    insertStrategy: UNION ALL
+    lagSpecification:
+      items:
+        - {}
+    refresh_mode: AUTO
+    selectDistinct: false
+    warehouseName: dev_wh_xs
+  database: ""
+  deployEnabled: true
+  description: ""
+  isMultisource: false
+  locationName: DW
+  materializationType: dynamic table
+  metadata:
+    appliedNodeTests: []
+    columns:
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: fe0ebeb6-e0dd-4e91-a929-f428ae9e8fbe
+          stepCounter: 0a75f3c8-69e3-438a-9a21-3a2d1685550b
+        config: {}
+        dataType: NUMBER(38,0)
+        description: ""
+        name: CUSTOMER_ID
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: 667cc352-3c0f-4701-9678-d0318f54678e
+                stepCounter: a04cc6e5-fe01-4320-b0b9-32ee420de642
+            transform: ""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: ad3fc65d-4d5a-4097-9f67-1222d1815bc0
+          stepCounter: 0a75f3c8-69e3-438a-9a21-3a2d1685550b
+        config: {}
+        dataType: VARCHAR(16777216)
+        description: ""
+        name: CITY
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: 638bf389-11a8-4dc6-a08b-7f2184d6b6a8
+                stepCounter: a04cc6e5-fe01-4320-b0b9-32ee420de642
+            transform: ""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: de6b1f31-34d6-4e5d-a2c9-601e0d039949
+          stepCounter: 0a75f3c8-69e3-438a-9a21-3a2d1685550b
+        config: {}
+        dataType: VARCHAR(16777216)
+        description: ""
+        name: COUNTRY
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: 4d8cdcd8-cbea-47d8-8cbc-008a387a9532
+                stepCounter: a04cc6e5-fe01-4320-b0b9-32ee420de642
+            transform: ""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: 857ae651-577d-48c0-9030-2b4dc1409e2b
+          stepCounter: 0a75f3c8-69e3-438a-9a21-3a2d1685550b
+        config: {}
+        dataType: VARCHAR(16777216)
+        description: ""
+        name: FIRST_NAME
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: 59085d64-ae4d-4dbb-b1d4-82afae37f5f5
+                stepCounter: a04cc6e5-fe01-4320-b0b9-32ee420de642
+            transform: ""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: c61fa547-6e23-4da5-a78d-d1ddad3526e7
+          stepCounter: 0a75f3c8-69e3-438a-9a21-3a2d1685550b
+        config: {}
+        dataType: VARCHAR(16777216)
+        description: ""
+        name: LAST_NAME
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: 13703f88-4a41-40d7-b25d-d289ac90df2a
+                stepCounter: a04cc6e5-fe01-4320-b0b9-32ee420de642
+            transform: ""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: 17fa427a-ab8a-4adb-bbc3-7f55a2814b60
+          stepCounter: 0a75f3c8-69e3-438a-9a21-3a2d1685550b
+        config: {}
+        dataType: VARCHAR(16777216)
+        description: ""
+        name: E_MAIL
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: 4b81eee4-ecbb-4e4d-a1ce-932eb3c00b28
+                stepCounter: a04cc6e5-fe01-4320-b0b9-32ee420de642
+            transform: ""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: 17dc0f9c-3664-4cd9-ab14-ddd767dedeea
+          stepCounter: 0a75f3c8-69e3-438a-9a21-3a2d1685550b
+        config: {}
+        dataType: VARCHAR(16777216)
+        description: ""
+        name: PHONE_NUMBER
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: e3f0ad7b-b7eb-4af2-8e5e-ce812cfe8b8d
+                stepCounter: a04cc6e5-fe01-4320-b0b9-32ee420de642
+            transform: ""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: de57edb7-d757-4842-bd6c-e63af5020bbb
+          stepCounter: 0a75f3c8-69e3-438a-9a21-3a2d1685550b
+        config: {}
+        dataType: FLOAT
+        description: ""
+        name: LOCATION_ID
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: 77023928-13d1-473c-8aa6-3191b7e46938
+                stepCounter: 8d3b6fde-6346-4525-bdbb-94228ae00966
+            transform: ARRAY_AGG(DISTINCT "DT_WRK_ORDER_HEADER"."LOCATION_ID")
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: 1d50db10-b4f7-4ce9-a01c-5637e4e154de
+          stepCounter: 0a75f3c8-69e3-438a-9a21-3a2d1685550b
+        config: {}
+        dataType: NUMBER(38,4)
+        description: ""
+        name: TOTAL_SALES
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: d2a897a7-2a83-4035-bd64-ec76aa24662c
+                stepCounter: 8d3b6fde-6346-4525-bdbb-94228ae00966
+            transform: SUM("DT_WRK_ORDER_HEADER"."ORDER_TOTAL")
+    cteString: ""
+    enabledColumnTestIDs: []
+    sourceMapping:
+      - aliases:
+          DT_DIM_CUSTOMER_LOYALTY: a04cc6e5-fe01-4320-b0b9-32ee420de642
+          STG_ORDER_HEADER: 8d3b6fde-6346-4525-bdbb-94228ae00966
+        customSQL:
+          customSQL: ""
+        dependencies:
+          - locationName: DW
+            nodeName: DT_DIM_CUSTOMER
+          - locationName: DW
+            nodeName: DT_WRK_ORDER_HEADER
+        join:
+          joinCondition: |-
+            FROM {{ ref('DW', 'DT_DIM_CUSTOMER') }} "DT_DIM_CUSTOMER_LOYALTY"
+            INNER JOIN {{ ref('DW', 'DT_WRK_ORDER_HEADER') }} "STG_ORDER_HEADER"
+            ON "DIM_CUSTOMER"."CUSTOMER_ID" = "STG_ORDER_HEADER"."CUSTOMER_ID"
+            GROUP BY "DIM_CUSTOMER"."CUSTOMER_ID", "DIM_CUSTOMER"."CITY", "DIM_CUSTOMER"."COUNTRY","DIM_CUSTOMER"."FIRST_NAME", "DIM_CUSTOMER"."LAST_NAME", "DIM_CUSTOMER"."PHONE_NUMBER", "DIM_CUSTOMER"."E_MAIL"
+        name: DT_CUSTOMER_LOYALTY_METRICS
+        noLinkRefs: []
+  name: DT_CUSTOMER_LOYALTY_METRICS
+  overrideSQL: false
+  schema: ""
+  sqlType: dynamic-tables-1-1-11:::347
+  type: sql
+  version: 1
+type: Node

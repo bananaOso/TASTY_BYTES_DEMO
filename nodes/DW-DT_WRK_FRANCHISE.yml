@@ -1,26 +1,42 @@
 fileVersion: 1
-id: e97d3883-2f0a-40a7-85a3-85c2a22ec9b7
-name: STG_FRANCHISE
+id: 4c5e618e-dd53-4711-9afe-5ade52c6fe45
+name: DT_WRK_FRANCHISE
 operation:
   config:
-    insertStrategy: INSERT
-    postSQL: ""
-    preSQL: ""
-    testsEnabled: true
-    truncateBefore: true
+    baseLocation: ""
+    clusterKey: false
+    clusterKeyConfig:
+      items:
+        - {}
+    clusterKeyConfigExpressions:
+      items:
+        - {}
+    clusterKeyExpressions: false
+    downstreamOption: true
+    externalVolume: ""
+    groupByAll: false
+    initialize: ON_CREATE
+    insertStrategy: UNION ALL
+    lagSpecification:
+      items:
+        - lagPeriod: Minutes
+          lagValue: 60
+    refresh_mode: AUTO
+    selectDistinct: false
+    warehouseName: COMPUTE_WH
   database: ""
   deployEnabled: true
   description: ""
   isMultisource: false
   locationName: DW
-  materializationType: table
+  materializationType: dynamic table
   metadata:
     appliedNodeTests: []
     columns:
       - appliedColumnTests: {}
         columnReference:
-          columnCounter: e5a803b2-7ebe-4e2d-b5bf-5efd8b2b051a
-          stepCounter: e97d3883-2f0a-40a7-85a3-85c2a22ec9b7
+          columnCounter: b402b46a-d3d5-4b7d-b307-725b20ca4605
+          stepCounter: 4c5e618e-dd53-4711-9afe-5ade52c6fe45
         config: {}
         dataType: NUMBER(38,0)
         description: ""
@@ -28,13 +44,13 @@ operation:
         nullable: true
         sourceColumnReferences:
           - columnReferences:
-              - columnCounter: f3626689-9980-49b9-adc1-33ac38eabf7e
-                stepCounter: 61ee79aa-9a70-4987-baa8-4efba74367fa
+              - columnCounter: 5a8fe8fe-7906-4ed9-90cc-4494f7e3120c
+                stepCounter: 3eac6bfb-9950-4b62-b849-2ea6db275316
             transform: ""
       - appliedColumnTests: {}
         columnReference:
-          columnCounter: efea6483-ae11-4912-b2f8-8e400a698949
-          stepCounter: e97d3883-2f0a-40a7-85a3-85c2a22ec9b7
+          columnCounter: baf75d82-58a3-4852-93e7-a2d2ab2d0464
+          stepCounter: 4c5e618e-dd53-4711-9afe-5ade52c6fe45
         config: {}
         dataType: VARCHAR(16777216)
         description: ""
@@ -42,13 +58,13 @@ operation:
         nullable: true
         sourceColumnReferences:
           - columnReferences:
-              - columnCounter: 667fdd73-8a83-449f-b5ef-62337a9d9f6c
-                stepCounter: 61ee79aa-9a70-4987-baa8-4efba74367fa
+              - columnCounter: 218401e7-de02-493a-a8b9-376d3b8e67d0
+                stepCounter: 3eac6bfb-9950-4b62-b849-2ea6db275316
             transform: ""
       - appliedColumnTests: {}
         columnReference:
-          columnCounter: aaf68237-c677-4b7e-b31b-029b8318c5af
-          stepCounter: e97d3883-2f0a-40a7-85a3-85c2a22ec9b7
+          columnCounter: 466dfbc5-5628-4080-a2ea-21d911bb4c42
+          stepCounter: 4c5e618e-dd53-4711-9afe-5ade52c6fe45
         config: {}
         dataType: VARCHAR(16777216)
         description: ""
@@ -56,13 +72,13 @@ operation:
         nullable: true
         sourceColumnReferences:
           - columnReferences:
-              - columnCounter: 6e9f3749-db44-4170-8a0b-e7eba5668c78
-                stepCounter: 61ee79aa-9a70-4987-baa8-4efba74367fa
+              - columnCounter: 14cf5664-c44a-4a35-868a-484fa93019ba
+                stepCounter: 3eac6bfb-9950-4b62-b849-2ea6db275316
             transform: ""
       - appliedColumnTests: {}
         columnReference:
-          columnCounter: fdc995e7-12d4-43fe-b89a-6fe5a7e97cc7
-          stepCounter: e97d3883-2f0a-40a7-85a3-85c2a22ec9b7
+          columnCounter: a08560fb-6174-4a73-b8f2-461ccdf8d642
+          stepCounter: 4c5e618e-dd53-4711-9afe-5ade52c6fe45
         config: {}
         dataType: VARCHAR(16777216)
         description: ""
@@ -70,13 +86,13 @@ operation:
         nullable: true
         sourceColumnReferences:
           - columnReferences:
-              - columnCounter: 3e36b59f-bb57-4363-83d3-3bee6b9c51e1
-                stepCounter: 61ee79aa-9a70-4987-baa8-4efba74367fa
+              - columnCounter: 254263ba-f667-4e2b-a7c2-0457968ba394
+                stepCounter: 3eac6bfb-9950-4b62-b849-2ea6db275316
             transform: ""
       - appliedColumnTests: {}
         columnReference:
-          columnCounter: f0fb4848-69ba-42ab-9a78-f6dcab9a790d
-          stepCounter: e97d3883-2f0a-40a7-85a3-85c2a22ec9b7
+          columnCounter: c46d4945-fd7d-4adc-887d-b8437c410e5b
+          stepCounter: 4c5e618e-dd53-4711-9afe-5ade52c6fe45
         config: {}
         dataType: VARCHAR(16777216)
         description: ""
@@ -84,13 +100,13 @@ operation:
         nullable: true
         sourceColumnReferences:
           - columnReferences:
-              - columnCounter: daf732c2-865f-41be-a664-46e9e074e0db
-                stepCounter: 61ee79aa-9a70-4987-baa8-4efba74367fa
+              - columnCounter: f3f17388-20cb-4653-83fe-4411907c5ff4
+                stepCounter: 3eac6bfb-9950-4b62-b849-2ea6db275316
             transform: ""
       - appliedColumnTests: {}
         columnReference:
-          columnCounter: f28e0545-ccdb-444a-94e4-df405ba37186
-          stepCounter: e97d3883-2f0a-40a7-85a3-85c2a22ec9b7
+          columnCounter: 8954e201-c409-412a-b474-87845736857c
+          stepCounter: 4c5e618e-dd53-4711-9afe-5ade52c6fe45
         config: {}
         dataType: VARCHAR(16777216)
         description: ""
@@ -98,13 +114,13 @@ operation:
         nullable: true
         sourceColumnReferences:
           - columnReferences:
-              - columnCounter: fc2a39bf-1fde-4afc-9388-d5623838b4b6
-                stepCounter: 61ee79aa-9a70-4987-baa8-4efba74367fa
+              - columnCounter: 4ebebf36-5877-41fd-bc2c-704753a0153b
+                stepCounter: 3eac6bfb-9950-4b62-b849-2ea6db275316
             transform: ""
       - appliedColumnTests: {}
         columnReference:
-          columnCounter: bcc75ef2-f080-464d-a939-b93bb2615b0a
-          stepCounter: e97d3883-2f0a-40a7-85a3-85c2a22ec9b7
+          columnCounter: a9d8f330-529e-4223-9c71-d6bf40f2d537
+          stepCounter: 4c5e618e-dd53-4711-9afe-5ade52c6fe45
         config: {}
         dataType: VARCHAR(16777216)
         description: ""
@@ -112,8 +128,8 @@ operation:
         nullable: true
         sourceColumnReferences:
           - columnReferences:
-              - columnCounter: fd24efb7-fc06-47cf-9100-0213e9a314bb
-                stepCounter: 61ee79aa-9a70-4987-baa8-4efba74367fa
+              - columnCounter: b27e1e05-fdf9-469c-bd8a-efcdef355dc1
+                stepCounter: 3eac6bfb-9950-4b62-b849-2ea6db275316
             transform: ""
     cteString: ""
     enabledColumnTestIDs: []
@@ -126,12 +142,12 @@ operation:
             nodeName: FRANCHISE
         join:
           joinCondition: FROM {{ ref('RAW_POS', 'FRANCHISE') }} "FRANCHISE"
-        name: STG_FRANCHISE
+        name: DT_WRK_FRANCHISE
         noLinkRefs: []
-  name: STG_FRANCHISE
+  name: DT_WRK_FRANCHISE
   overrideSQL: false
   schema: ""
-  sqlType: Stage
+  sqlType: dynamic-tables-1-1-11:::347
   type: sql
   version: 1
 type: Node
