@@ -304,7 +304,7 @@ operation:
           customSQL: ""
         dependencies: []
         join:
-          joinCondition: "--can you see this"
+          joinCondition: ""
         name: COUNTRY
         noLinkRefs: []
   name: COUNTRY

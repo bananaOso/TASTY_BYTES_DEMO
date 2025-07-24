@@ -20,7 +20,7 @@ operation:
     lagSpecification:
       items:
         - lagPeriod: Minutes
-          lagValue: 60
+          lagValue: "1"
     refresh_mode: AUTO
     selectDistinct: false
     warehouseName: COMPUTE_WH
@@ -246,14 +246,17 @@ operation:
     cteString: ""
     enabledColumnTestIDs: []
     sourceMapping:
-      - aliases: {}
+      - aliases:
+          CUSTOMER_LOYALTY: 51771e87-2a16-4dbd-b6c7-e6dd0975442a
         customSQL:
           customSQL: ""
         dependencies:
           - locationName: RAW_CUSTOMER
             nodeName: CUSTOMER_LOYALTY
         join:
-          joinCondition: FROM {{ ref('RAW_CUSTOMER', 'CUSTOMER_LOYALTY') }} "CUSTOMER_LOYALTY"
+          joinCondition: |-
+            FROM {{ ref('RAW_CUSTOMER', 'CUSTOMER_LOYALTY') }} "CUSTOMER_LOYALTY"
+            limit 200
         name: DT_WRK_CUSTOMER_LOYALTY
         noLinkRefs: []
   name: DT_WRK_CUSTOMER_LOYALTY
