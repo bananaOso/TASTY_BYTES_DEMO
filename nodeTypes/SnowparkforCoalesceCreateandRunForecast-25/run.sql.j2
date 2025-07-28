@@ -3,11 +3,11 @@
 {% set forecast_name = 'FORECAST_' ~ src_node.name %}
 
 {{ stage('Truncate Forecast table') }}
-TRUNCATE IF EXISTS {{ ref_no_link(node.location.name, node.name) }}
+TRUNCATE IF EXISTS {{ this }}
 
 {{ stage('Populate Forecast Table with Historical Data') }}
 
-INSERT INTO {{ ref_no_link(node.location.name, node.name) }}
+INSERT INTO {{ this }}
 (
     {%- for col in source.columns  %} 
         "{{ col.name }}" {%- if not loop.last -%}, {% endif %}
@@ -15,10 +15,15 @@ INSERT INTO {{ ref_no_link(node.location.name, node.name) }}
 )
 SELECT 
     {% for col in source.columns  %} 
+        {%- if col.name == config.tgtcol.name -%}
+        sum({{config.tgtcol.name}}) as {{config.tgtcol.name}}
+        {%- elif col.name != config.tgtcol.name %} 
         {{ get_source_transform(col) }} AS "{{ col.name }}"
+        {%- endif %}
         {%- if not loop.last -%}, {% endif %}
     {% endfor %}
 {{ source.join }}
+group by all
 
 {{ stage('Create Forecast Model Instance') }}
 
@@ -29,7 +34,7 @@ CREATE OR REPLACE SNOWFLAKE.ML.FORECAST
         {%- for col in columns if not (col.forecast or col.upper_bound or col.lower_bound) %}
             "{{col.name}}"{%- if not loop.last %}, {%- endif %}
         {%- endfor %}            
-        FROM {{ ref_no_link(node.location.name, node.name) }}
+        FROM {{ this }}
         WHERE  "{{ config.tgtcol.name }}" IS NOT NULL
     '),
     {% if config.multiseries %}SERIES_COLNAME => '{{ config.seriescol.name }}', {% endif %}
@@ -48,13 +53,13 @@ BEGIN
         {%- for col in columns if not (col.forecast or col.upper_bound or col.lower_bound) %}
             "{{col.name}}"{%- if not loop.last %}, {%- endif %}
         {%- endfor %}            
-        FROM {{ ref_no_link(node.location.name, node.name) }}
+        FROM {{ this }}
         WHERE  "{{ config.tgtcol.name }}" IS NULL
     '),
     {%if config.multiseries %}SERIES_COLNAME => '{{ config.seriescol.name }}', {% endif %}
     TIMESTAMP_COLNAME => '{{ config.tscol.name }}' );
 
-    UPDATE {{ ref_no_link(node.location.name, node.name) }} SRC
+    UPDATE {{ this }} SRC
     SET 
         {%- for col in columns if  col.forecast or col.lower_bound or col.upper_bound %}
             "{{ col.name }}" = RES."{{ col.name }}" {%- if not loop.last %}, {%- endif %}
@@ -70,7 +75,7 @@ BEGIN
 
     CALL {{ ref_no_link(node.location.name, forecast_name) }}!FORECAST({{ config.fcdays }});
 
-    INSERT INTO {{ ref_no_link(node.location.name, node.name) }}
+    INSERT INTO {{ this }}
     (
         {%- for col in source.columns  %} 
             "{{ col.name }}" {%- if not loop.last -%}, {% endif %}
