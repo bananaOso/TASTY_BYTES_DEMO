@@ -143,8 +143,25 @@ operation:
               - columnCounter: 9887710f-245d-4eeb-bfe4-ca40316632a7
                 stepCounter: 4071cc29-b81a-428b-b93f-f43085e673e2
             transform: SUM("STG_ORDER_HEADER"."ORDER_TOTAL")
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: 602118b1-c10c-434c-8e0b-bc53f87abd82
+          stepCounter: 1f847edb-e0aa-4178-bdad-bedcf9e8d9d9
+        config: {}
+        dataType: VARCHAR
+        description: ""
+        name: FULL_NAME
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: 3b260e0f-291a-448d-a6d8-7bfdbcdbe005
+                stepCounter: 175e9114-fc87-4023-a2bd-e5eb574743b8
+            transform: "\"DIM_CUSTOMER\".\"FIRST_NAME\" || ' ' || \"DIM_CUSTOMER\".\"LAST_NAME\""
     cteString: ""
+    description: ""
+    destinationName: ""
     enabledColumnTestIDs: []
+    materializationOption: ""
     sourceMapping:
       - aliases:
           DIM_CUSTOMER: 175e9114-fc87-4023-a2bd-e5eb574743b8
@@ -159,9 +176,15 @@ operation:
         join:
           joinCondition: |-
             FROM {{ ref('DW', 'DIM_CUSTOMER') }} "DIM_CUSTOMER"
+
             INNER JOIN {{ ref('DW', 'STG_ORDER_HEADER') }} "STG_ORDER_HEADER"
+
             ON "DIM_CUSTOMER"."CUSTOMER_ID" = "STG_ORDER_HEADER"."CUSTOMER_ID"
-            GROUP BY "DIM_CUSTOMER"."CUSTOMER_ID", "DIM_CUSTOMER"."CITY", "DIM_CUSTOMER"."COUNTRY","DIM_CUSTOMER"."FIRST_NAME", "DIM_CUSTOMER"."LAST_NAME", "DIM_CUSTOMER"."PHONE_NUMBER", "DIM_CUSTOMER"."E_MAIL"
+
+            GROUP BY "DIM_CUSTOMER"."CUSTOMER_ID", "DIM_CUSTOMER"."CITY",
+            "DIM_CUSTOMER"."COUNTRY","DIM_CUSTOMER"."FIRST_NAME",
+            "DIM_CUSTOMER"."LAST_NAME", "DIM_CUSTOMER"."PHONE_NUMBER",
+            "DIM_CUSTOMER"."E_MAIL"
         name: CUSTOMER_LOYALTY_METRICS
         noLinkRefs: []
   name: CUSTOMER_LOYALTY_METRICS

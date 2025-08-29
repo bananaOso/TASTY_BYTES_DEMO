@@ -142,7 +142,7 @@ operation:
   name: STG_COUNTRY
   overrideSQL: false
   schema: ""
-  sqlType: Stage
+  sqlType: dynamic-tables-1-1-11:::347
   type: sql
   version: 1
 type: Node
