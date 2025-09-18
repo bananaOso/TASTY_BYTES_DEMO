@@ -1,6 +1,6 @@
 fileVersion: 1
 id: 1f847edb-e0aa-4178-bdad-bedcf9e8d9d9
-name: CUSTOMER_LOYALTY_METRICS
+name: CUSTOMER_METRICS
 operation:
   config:
     insertStrategy: INSERT
@@ -185,9 +185,9 @@ operation:
             "DIM_CUSTOMER"."COUNTRY","DIM_CUSTOMER"."FIRST_NAME",
             "DIM_CUSTOMER"."LAST_NAME", "DIM_CUSTOMER"."PHONE_NUMBER",
             "DIM_CUSTOMER"."E_MAIL"
-        name: CUSTOMER_LOYALTY_METRICS
+        name: CUSTOMER_METRICS
         noLinkRefs: []
-  name: CUSTOMER_LOYALTY_METRICS
+  name: CUSTOMER_METRICS
   overrideSQL: false
   schema: ""
   sqlType: Stage

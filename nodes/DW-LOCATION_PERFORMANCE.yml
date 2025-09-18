@@ -1,6 +1,6 @@
 fileVersion: 1
 id: 8ce2d9df-b775-4a02-9885-37c61c083c7d
-name: SALES_METRICS_BY_LOCATION
+name: LOCATION_PERFORMANCE
 operation:
   config:
     dfcmd: |2
@@ -255,9 +255,9 @@ operation:
             ON "STG_LOCATION"./*COLUMN*/ = "STG_TRUCK"./*COLUMN*/
             INNER JOIN {{ ref('DW', 'FCT_ORDERS') }} "ORDERS"
             ON "STG_LOCATION"./*COLUMN*/ = "ORDERS"./*COLUMN*/
-        name: SALES_METRICS_BY_LOCATION
+        name: LOCATION_PERFORMANCE
         noLinkRefs: []
-  name: SALES_METRICS_BY_LOCATION
+  name: LOCATION_PERFORMANCE
   overrideSQL: false
   schema: ""
   sqlType: "5"
